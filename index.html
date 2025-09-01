@@ -67,7 +67,11 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100 btn-lg">লগইন করুন</button>
                 </form>
-                <button id="showAffiliateLogin" class="btn btn-link mt-3">স্টুডেন্ট অ্যাফিলিয়েট পোর্টাল</button>
+                <!-- === সমাধান: বাটনটি প্রাথমিকভাবে নিষ্ক্রিয় থাকবে === -->
+                <button id="showAffiliateLogin" class="btn btn-link mt-3" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    ডেটা লোড হচ্ছে...
+                </button>
             </div>
             <div id="affiliateLoginView" style="display:none;">
                 <h4>অ্যাফিলিয়েট ড্যাশবোর্ড</h4>
@@ -75,6 +79,10 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="affiliateStudentId" placeholder="Student ID" required>
                         <label for="affiliateStudentId">আপনার স্টুডেন্ট আইডি</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="affiliatePassword" placeholder="Password" required>
+                        <label for="affiliatePassword">পাসওয়ার্ড</label>
                     </div>
                     <button type="submit" class="btn btn-success w-100 btn-lg">ড্যাশবোর্ড দেখুন</button>
                 </form>
@@ -129,7 +137,7 @@
             <div id="search-student" class="main-content-section"> <h2>শিক্ষার্থী সার্চ করুন</h2> <div class="card mt-4"> <div class="card-body"> <form id="studentSearchForm"> <div class="input-group"> <input type="text" id="searchInput" class="form-control" placeholder="স্টুডেন্ট আইডি দিয়ে সার্চ করুন (যেমন: SIT-101)" required> <button class="btn btn-primary" type="submit"><i class="fas fa-search me-2"></i>সার্চ</button> </div> </form> </div> </div> <div id="searchResult" class="mt-4"></div> </div>
             <div id="accounts-main" class="main-content-section"> <h2>একাউন্টস</h2> <div class="card mt-4"><div class="card-body"> <form id="accountsForm" class="needs-validation" novalidate> <input type="hidden" id="accountEditId" name="accountEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="accountSerial" name="accountSerial" readonly></div> <div class="col-md-2"><label>তারিখ</label><input type="date" class="form-control" id="accountDate" name="accountDate" required></div> <div class="col-md-3"><label>জিমেইল</label><input type="email" class="form-control" id="accountEmail" name="accountEmail" required></div> <div class="col-md-3"><label>পাসওয়ার্ড</label><div class="input-group"><input type="password" class="form-control" id="accountPassword" name="accountPassword" required><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div></div> <div class="col-md-3"><label>একাউন্ট স্ট্যাটাস</label><select class="form-select" id="accountStatus" name="accountStatus"><option value="রানিং">রানিং</option><option value="মোবাইল নাম্বার ভেরিফিকেশন">মোবাইল নাম্বার ভেরিফিকেশন</option><option value="হোল্ড">হোল্ড</option><option value="ব্যান">ব্যান</option></select></div> <div class="col-md-3" id="activationDateWrapper" style="display: none;"><label>একাউন্ট সচল এর তারিখ</label><input type="date" class="form-control" id="activationDate" name="activationDate"></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>তারিখ</th><th>জিমেইল</th><th>পাসওয়ার্ড</th><th>স্ট্যাটাস</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="accountsTableBody" data-state-key="accounts"></tbody></table></div> </div>
             <div id="accounts-ssn" class="main-content-section"> <h2>একাউন্টস এস এস এন</h2> <div class="card mt-4"><div class="card-body"> <form id="ssnForm" class="needs-validation" novalidate> <input type="hidden" id="ssnEditId" name="ssnEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="ssnSerial" name="ssnSerial" readonly></div> <div class="col-md-2"><label>একাউন্ট ধরন</label><select class="form-select" id="ssnType" name="ssnType" required><option value="">নির্বাচন..</option><option>TOP SURVEYS</option><option>FIVE SURVEYS</option><option>PRIME OPINION</option><option>OPINION EDGE</option><option>EARN STAR</option><option>HEY CASH</option><option>OTHERS</option></select></div> <div class="col-md-3"><label>নাম</label><input type="text" id="ssnName" name="ssnName" class="form-control" required></div> <div class="col-md-2"><label>জন্ম তারিখ</label><input type="date" id="ssnDob" name="ssnDob" class="form-control" required></div> <div class="col-md-2"><label>মোবাইল</label><input type="tel" id="ssnMobile" name="ssnMobile" class="form-control"></div> <div class="col-md-2"><label>বয়স</label><input type="number" id="ssnAge" name="ssnAge" class="form-control"></div> <div class="col-md-2"><label>দেশ</label><select class="form-select" id="ssnCountry" name="ssnCountry" required><option>United States</option></select></div> <div class="col-md-2"><label>স্ট্যাড</label><select class="form-select" id="ssnState" name="ssnState" required></select></div> <div class="col-md-2"><label>সিটি</label><input type="text" id="ssnCity" name="ssnCity" class="form-control" required></div> <div class="col-md-2"><label>কাউন্টি</label><input type="text" id="ssnCounty" name="ssnCounty" class="form-control"></div> <div class="col-md-2"><label>জিপ কোড</label><input type="text" id="ssnZip" name="ssnZip" class="form-control" required></div> <div class="col-md-2"><label>এসএসএন</label><input type="text" id="ssnNumber" name="ssnNumber" class="form-control" required></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>ধরন</th><th>নাম</th><th>দেশ</th><th>SSN</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="ssnTableBody" data-state-key="ssnAccounts"></tbody></table></div> </div>
-            <div id="add-student" class="main-content-section"> <h2>শিক্ষার্থী যোগ করুন</h2> <div class="card mt-4"><div class="card-body"> <form id="studentForm" class="needs-validation" novalidate> <input type="hidden" id="studentEditId" name="studentEditId"> <div class="row g-3"> <div class="col-md-2"><label>স্টুডেন্ট আইডি</label><input type="text" class="form-control" id="studentIdField" name="studentId" readonly></div> <div class="col-md-2"><label>ভর্তি তারিখ</label><input type="date" class="form-control" id="studentDate" name="studentDate" required></div> <div class="col-md-4"><label>শিক্ষার্থীর নাম</label><input type="text" class="form-control" id="studentName" name="studentName" required></div> <div class="col-md-4"><label>পিতার নাম</label><input type="text" class="form-control" id="studentFatherName" name="studentFatherName" required></div> <div class="col-md-4"><label>ঠিকানা</label><input type="text" class="form-control" id="studentAddress" name="studentAddress" required></div> <div class="col-md-3"><label>সার্ভিস</label><select class="form-select" id="studentService" name="studentService" required><option value="">নির্বাচন..</option><option>আইপি</option><option>ভিপিএস</option><option>অন্যান্য</option></select></div> <div class="col-md-3"><label>টাকার পরিমান</label><input type="number" class="form-control" id="studentAmount" name="studentAmount" required></div><div class="col-md-2"><label>রেফারেল আইডি (ঐচ্ছিক)</label><input type="text" class="form-control" id="referralId" name="referralId"></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>স্টুডেন্ট আইডি</th><th>ভর্তি তারিখ</th><th>নাম</th><th>সার্ভিস</th><th>টাকা</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="studentTableBody" data-state-key="students"></tbody></table></div> </div>
+            <div id="add-student" class="main-content-section"> <h2>শিক্ষার্থী যোগ করুন</h2> <div class="card mt-4"><div class="card-body"> <form id="studentForm" class="needs-validation" novalidate> <input type="hidden" id="studentEditId" name="studentEditId"> <div class="row g-3"> <div class="col-md-2"><label>স্টুডেন্ট আইডি</label><input type="text" class="form-control" id="studentIdField" name="studentId" readonly></div> <div class="col-md-2"><label>ভর্তি তারিখ</label><input type="date" class="form-control" id="studentDate" name="studentDate" required></div> <div class="col-md-4"><label>শিক্ষার্থীর নাম</label><input type="text" class="form-control" id="studentName" name="studentName" required></div> <div class="col-md-4"><label>পিতার নাম</label><input type="text" class="form-control" id="studentFatherName" name="studentFatherName" required></div> <div class="col-md-4"><label>ঠিকানা</label><input type="text" class="form-control" id="studentAddress" name="studentAddress" required></div> <div class="col-md-3"><label>সার্ভিস</label><select class="form-select" id="studentService" name="studentService" required><option value="">নির্বাচন..</option><option>আইপি</option><option>ভিপিএস</option><option>অন্যান্য</option></select></div> <div class="col-md-3"><label>টাকার পরিমান</label><input type="number" class="form-control" id="studentAmount" name="studentAmount" required></div><div class="col-md-2"><label>রেফারেল আইডি (ঐচ্ছিক)</label><input type="text" class="form-control" id="referralId" name="referralId"></div><div class="col-md-3"><label>পাসওয়ার্ড</label><div class="input-group"><input type="password" class="form-control" id="studentPassword" name="studentPassword" placeholder="পরিবর্তন না করলে খালি রাখুন"><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>স্টুডেন্ট আইডি</th><th>ভর্তি তারিখ</th><th>নাম</th><th class="th-password">পাসওয়ার্ড</th><th>সার্ভিস</th><th>টাকা</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="studentTableBody" data-state-key="students"></tbody></table></div> </div>
             <div id="installments" class="main-content-section"> <h2>কিস্তি হিসাব</h2> <div class="card mt-4"><div class="card-body"> <form id="installmentsForm" class="needs-validation" novalidate> <input type="hidden" id="installmentEditId" name="installmentEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="installmentSerial" name="installmentSerial" readonly></div> <div class="col-md-2"><label>তারিখ</label><input type="date" class="form-control" id="installmentDate" name="installmentDate" required></div> <div class="col-md-3"> <label>শিক্ষার্থীর নাম</label> <select class="form-select" id="installmentStudentName" name="installmentStudentName" required> <option value="">নির্বাচন করুন...</option> </select> </div> <div class="col-md-3"> <label>সার্ভিস</label> <select class="form-select" id="installmentService" name="installmentService" required> <option value="">নির্বাচন..</option><option>আইপি</option><option>ভিপিএস</option><option>অন্যান্য</option> </select> </div> <div class="col-md-3"><label>মোট টাকা</label><input type="number" class="form-control" id="installmentTotal" name="installmentTotal" required></div> <div class="col-md-3"><label>জমা</label><input type="number" class="form-control" id="installmentPaid" name="installmentPaid" required></div> <div class="col-md-3"><label>বাকি</label><input type="number" class="form-control" id="installmentDue" name="installmentDue" readonly></div> <div class="col-md-3"><label>কিস্তির তারিখ</label><input type="date" class="form-control" id="installmentNextDate" name="installmentNextDate" required></div> <div class="col-md-3"> <label>স্ট্যাটাস</label> <select class="form-select" id="installmentStatus" name="installmentStatus" required> <option value="Unpaid">Unpaid</option> <option value="Paid">Paid</option> </select> </div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>ছাত্রের নাম</th><th>মোট টাকা</th><th>জমা</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>স্ট্যাটাস</th><th>একশন</th></tr></thead><tbody id="installmentsTableBody" data-state-key="installments"></tbody></table></div> </div>
             <div id="withdrawal-requests" class="main-content-section"> <h2>উত্তোলন অনুরোধসমূহ</h2> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>তারিখ</th><th>স্টুডেন্ট আইডি</th><th>নাম</th><th>টাকা</th><th>মাধ্যম</th><th>একাউন্ট</th><th>স্ট্যাটাস</th><th>একশন</th></tr></thead><tbody id="withdrawalRequestsTableBody" data-state-key="withdrawalRequests"></tbody></table></div> </div>
             <div id="expense" class="main-content-section"> <h2>খরচ হিসাব</h2> <div class="card mt-4"><div class="card-body"> <form id="expenseForm" class="needs-validation" novalidate> <input type="hidden" id="expenseEditId" name="expenseEditId"> <div class="row g-3 align-items-end"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="expenseSerial" name="expenseSerial" readonly></div> <div class="col-md-3"><label>তারিখ</label><input type="date" class="form-control" id="expenseDate" name="expenseDate" required></div> <div class="col-md-4"><label>খরচের খাত</label><select class="form-select" id="expenseCategory" name="expenseCategory" required><option value="">নির্বাচন..</option><option>আয়পি ক্রয়</option><option>ভিপিএস ক্রয়</option><option>একাউন্ট ক্রয়</option><option>অন্যান্য</option></select></div> <div class="col-md-3"><label>খরচের পরিমান</label><input type="number" class="form-control" id="expenseAmount" name="expenseAmount" required></div> <div class="col-md-1"><button type="submit" class="btn btn-primary w-100">সাবমিট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>তারিখ</th><th>খরচের খাত</th><th>পরিমান</th><th>একশন</th></tr></thead><tbody id="expenseTableBody" data-state-key="expenses"></tbody></table></div> </div>
@@ -192,7 +200,7 @@
                 const editIdInput = form.querySelector('input[type="hidden"]'); const editId = editIdInput.value; const data = getFormData(form);
                 try {
                     if (editId) {
-                        const existingData = window.appState[path].find(i => i.id === editId);
+                        const existingData = (window.appState[path] || []).find(i => i.id === editId);
                         await set(ref(db, `${path}/${editId}`), {...existingData, ...data});
                     } else {
                         data.createdAt = serverTimestamp();
@@ -206,16 +214,26 @@
             };
 
             const editItem = (id, path, formId) => {
-                const item = window.appState[path]?.find(i => i.id === id);
+                const item = (window.appState[path] || []).find(i => i.id === id);
                 if (item) {
                     const form = document.getElementById(formId); form.querySelector('input[type="hidden"]').value = item.id;
-                    Object.keys(item).forEach(key => { const element = form.elements[key]; if (element) element.value = item[key]; });
+                    Object.keys(item).forEach(key => { 
+                        let formKey = key;
+                        if(key === 'password' && formId === 'studentForm') {
+                            formKey = 'studentPassword';
+                        }
+                        const element = form.elements[formKey]; 
+                        if (element) element.value = item[key]; 
+                    });
+                    if (formId === 'studentForm') {
+                        document.getElementById('studentPassword').required = false;
+                    }
                     form.scrollIntoView({ behavior: 'smooth' });
                 }
             };
             const deleteItem = (id, path, name = 'আইটেম') => { Swal.fire({ title: 'আপনি কি নিশ্চিত?', text: "এই কাজটি ফিরিয়ে আনা সম্ভব নয়!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'হ্যাঁ, মুছে ফেলুন!', cancelButtonText: 'না, বাতিল করুন' }).then(async (result) => { if (result.isConfirmed) { try { await remove(ref(db, `${path}/${id}`)); Swal.fire('মুছে ফেলা হয়েছে!', `${name} টি সফলভাবে মুছে ফেলা হয়েছে।`, 'success'); } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'মুছে ফেলা সম্ভব হয়নি।' }); } } }); };
             const toggleStatus = async (id, path, field = 'isActive') => {
-                const item = window.appState[path]?.find(i => i.id === id);
+                const item = (window.appState[path] || []).find(i => i.id === id);
                 if (item) {
                     const updates = {};
                     if (field === 'installmentStatus') {
@@ -242,76 +260,126 @@
                     if (action === 'toggle-password') { const passField = button.closest('td').querySelector('.password-field'); const icon = button.querySelector('i'); passField.classList.toggle('show-password'); icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash'); }
                 }
                 if (button.classList.contains('password-toggle-icon')) {
-                    const input = button.previousElementSibling; const icon = button.querySelector('i');
+                    const input = button.closest('.input-group').querySelector('input'); const icon = button.querySelector('i');
                     if (input.type === "password") { input.type = "text"; icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash');
                     } else { input.type = "password"; icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
                 }
             });
             
-            const populateStudentDropdowns = (students) => { const select = document.getElementById('installmentStudentName'); select.innerHTML = '<option value="">নির্বাচন করুন...</option>'; students.forEach(student => { select.innerHTML += `<option value="${student.studentId}">${student.studentId} - ${student.studentName}</option>`; }); };
+            const populateStudentDropdowns = (students) => { const select = document.getElementById('installmentStudentName'); if(!select) return; select.innerHTML = '<option value="">নির্বাচন করুন...</option>'; (students || []).forEach(student => { select.innerHTML += `<option value="${student.studentId}">${student.studentId} - ${student.studentName}</option>`; }); };
             
             const renderFunctions = {
-                accounts: data => { const t = document.getElementById('accountsTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.accountDate}</td><td>${e.accountEmail}</td><td class="password-field-cell"><span class="password-field">${e.accountPassword}</span><button class="btn btn-sm btn-outline-secondary" data-action="toggle-password"><i class="fas fa-eye"></i></button></td><td><span class="badge bg-info">${e.accountStatus}</span></td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('accountSerial').value = data.length + 1; },
-                ssnAccounts: data => { const t = document.getElementById('ssnTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.ssnType}</td><td>${e.ssnName}</td><td>${e.ssnCountry}</td><td>${e.ssnNumber}</td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('ssnSerial').value = data.length + 1; },
-                students: data => { const t = document.getElementById('studentTableBody'); t.innerHTML = ''; data.forEach((e) => { t.innerHTML += `<tr><td>${e.studentId}</td><td>${e.studentDate}</td><td>${e.studentName}</td><td>${e.studentService}</td><td>${e.studentAmount}</td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); updateDashboard(); populateStudentDropdowns(data); },
-                installments: data => { const tbody = document.getElementById('installmentsTableBody'); tbody.innerHTML = ''; data.forEach((item, i) => { const statusBadge = item.installmentStatus === 'Paid' ? 'success' : 'danger'; tbody.innerHTML += `<tr><td>${i + 1}</td><td>${item.installmentStudentName}</td><td>${item.installmentTotal}</td><td>${item.installmentPaid}</td><td>${item.installmentDue}</td><td>${item.installmentNextDate}</td><td><button class="btn btn-sm btn-${statusBadge}" data-action="toggle" data-id="${item.id}">${item.installmentStatus}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${item.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('installmentSerial').value = data.length + 1; },
-                withdrawalRequests: data => { const t = document.getElementById('withdrawalRequestsTableBody'); t.innerHTML = ''; data.forEach((e) => { const status = e.status === 'Pending' ? 'warning' : e.status === 'Completed' ? 'success' : 'danger'; let actions = e.status === 'Pending' ? `<button class="btn btn-sm btn-success" data-action="approve-withdrawal" data-id="${e.id}">Approve</button><button class="btn btn-sm btn-danger" data-action="reject-withdrawal" data-id="${e.id}">Reject</button>` : 'N/A'; t.innerHTML += `<tr><td>${new Date(e.requestDate).toLocaleDateString("bn-BD")}</td><td>${e.studentId}</td><td>${e.studentName}</td><td>${e.amount}</td><td>${e.method}</td><td>${e.accountNumber}</td><td><span class="badge bg-${status}">${e.status}</span></td><td class="action-btns">${actions}</td></tr>`; }); },
-                expenses: data => { const t = document.getElementById('expenseTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.expenseDate}</td><td>${e.expenseCategory}</td><td>${e.expenseAmount}</td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('expenseSerial').value = data.length + 1; updateDashboard(); }
+                accounts: data => { const t = document.getElementById('accountsTableBody'); if(!t) return; t.innerHTML = ''; (data || []).forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.accountDate}</td><td>${e.accountEmail}</td><td class="password-field-cell"><span class="password-field">${e.accountPassword}</span><button class="btn btn-sm btn-outline-secondary" data-action="toggle-password"><i class="fas fa-eye"></i></button></td><td><span class="badge bg-info">${e.accountStatus}</span></td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('accountSerial').value = (data || []).length + 1; },
+                ssnAccounts: data => { const t = document.getElementById('ssnTableBody'); if(!t) return; t.innerHTML = ''; (data || []).forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.ssnType}</td><td>${e.ssnName}</td><td>${e.ssnCountry}</td><td>${e.ssnNumber}</td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('ssnSerial').value = (data || []).length + 1; },
+                students: data => {
+                    const t = document.getElementById('studentTableBody');
+                    if (!t) return;
+                    t.innerHTML = '';
+                    (data || []).forEach((e) => {
+                        const passwordCell = e.password ? `<td class="password-field-cell"><span class="password-field">${e.password}</span><button class="btn btn-sm btn-outline-secondary" data-action="toggle-password"><i class="fas fa-eye"></i></button></td>` : `<td>N/A</td>`;
+                        t.innerHTML += `<tr><td>${e.studentId}</td><td>${e.studentDate}</td><td>${e.studentName}</td>${passwordCell}<td>${e.studentService}</td><td>${e.studentAmount}</td><td><button class="btn btn-sm btn-${e.isActive ? "success" : "danger"}" data-action="toggle" data-id="${e.id}">${e.isActive ? "Active" : "Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`;
+                    });
+                    updateDashboard();
+                    populateStudentDropdowns(data);
+                },
+                installments: data => { const tbody = document.getElementById('installmentsTableBody'); if(!tbody) return; tbody.innerHTML = ''; (data || []).forEach((item, i) => { const statusBadge = item.installmentStatus === 'Paid' ? 'success' : 'danger'; tbody.innerHTML += `<tr><td>${i + 1}</td><td>${item.installmentStudentName}</td><td>${item.installmentTotal}</td><td>${item.installmentPaid}</td><td>${item.installmentDue}</td><td>${item.installmentNextDate}</td><td><button class="btn btn-sm btn-${statusBadge}" data-action="toggle" data-id="${item.id}">${item.installmentStatus}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${item.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('installmentSerial').value = (data || []).length + 1; },
+                withdrawalRequests: data => { const t = document.getElementById('withdrawalRequestsTableBody'); if(!t) return; t.innerHTML = ''; (data || []).forEach((e) => { const status = e.status === 'Pending' ? 'warning' : e.status === 'Completed' ? 'success' : 'danger'; let actions = e.status === 'Pending' ? `<button class="btn btn-sm btn-success" data-action="approve-withdrawal" data-id="${e.id}">Approve</button><button class="btn btn-sm btn-danger" data-action="reject-withdrawal" data-id="${e.id}">Reject</button>` : ''; t.innerHTML += `<tr><td>${new Date(e.requestDate).toLocaleDateString("bn-BD")}</td><td>${e.studentId}</td><td>${e.studentName}</td><td>${e.amount}</td><td>${e.method}</td><td>${e.accountNumber}</td><td><span class="badge bg-${status}">${e.status}</span></td><td class="action-btns">${actions}</td></tr>`; }); },
+                expenses: data => { const t = document.getElementById('expenseTableBody'); if(!t) return; t.innerHTML = ''; (data || []).forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.expenseDate}</td><td>${e.expenseCategory}</td><td>${e.expenseAmount}</td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('expenseSerial').value = (data || []).length + 1; updateDashboard(); }
             };
 
             const initializeRealtimeListeners = () => {
-                const paths = ['accounts', 'ssnAccounts', 'students', 'installments', 'expenses', 'settings', 'withdrawalRequests', 'referrals'];
+                const paths = ['accounts', 'ssnAccounts', 'students', 'installments', 'expenses', 'settings', 'withdrawalRequests', 'referrals', 'studentIdCounter'];
                 unsubscribeListeners.forEach(unsub => unsub()); unsubscribeListeners = [];
                 paths.forEach(path => {
                     const unsub = onValue(ref(db, path), snapshot => {
                         const data = snapshot.val();
-                        const items = data ? Object.keys(data).map(key => ({ ...data[key], id: key })) : [];
+                        let items = [];
+                        if (data) {
+                           items = (path === 'studentIdCounter') ? data : Object.keys(data).map(key => ({ ...data[key], id: key }));
+                        }
                         window.appState[path] = items;
+                        
+                        // === সমাধান: student ডেটা লোড হওয়ার পর বাটন সক্রিয় করা ===
+                        if (path === 'students') {
+                            const affiliateLoginBtn = document.getElementById('showAffiliateLogin');
+                            if (affiliateLoginBtn && affiliateLoginBtn.disabled) {
+                                affiliateLoginBtn.disabled = false;
+                                affiliateLoginBtn.innerHTML = 'স্টুডেন্ট অ্যাফিলিয়েট পোর্টাল';
+                            }
+                        }
+
                         if(renderFunctions[path]) renderFunctions[path](items);
                         if(path === 'settings') loadSettings(items);
-                    });
+                    }, { onlyOnce: false });
                     unsubscribeListeners.push(unsub);
                 });
             };
 
             document.getElementById('accountsForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'accounts'); });
             document.getElementById('ssnForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'ssnAccounts'); });
+            
             document.getElementById('studentForm').addEventListener('submit', async e => {
                 e.preventDefault();
+                const form = e.target;
+                const studentPasswordField = document.getElementById('studentPassword');
                 const editId = document.getElementById('studentEditId').value;
-                const referralId = document.getElementById('referralId').value.trim();
-                if (!editId) {
-                    const studentCountSnapshot = await get(ref(db, 'students'));
-                    const studentCount = studentCountSnapshot.exists() ? Object.keys(studentCountSnapshot.val()).length : 0;
-                    const newId = `SIT-${101 + studentCount}`;
-                    document.getElementById('studentIdField').value = newId;
 
-                    if(referralId && window.appState.settings && window.appState.settings[0]?.affiliateFee > 0) {
-                        const fee = parseFloat(window.appState.settings[0].affiliateFee);
-                        const studentRef = ref(db, 'students');
-                        get(studentRef).then((snapshot) => {
-                            if (snapshot.exists()) {
-                                const students = snapshot.val();
-                                const referrerKey = Object.keys(students).find(key => students[key].studentId === referralId);
-                                if(referrerKey) {
-                                    const referrerRef = ref(db, `students/${referrerKey}`);
-                                    runTransaction(referrerRef, (currentData) => {
-                                        if (currentData) {
-                                            currentData.affiliateBalance = (currentData.affiliateBalance || 0) + fee;
-                                        }
-                                        return currentData;
-                                    });
-                                    push(ref(db, 'referrals'), {
-                                        referrerId: referralId, newStudentId: newId, newStudentName: document.getElementById('studentName').value,
-                                        commissionAmount: fee, date: serverTimestamp()
-                                    });
-                                }
+                if (!editId) { studentPasswordField.required = true; }
+
+                if (!form.checkValidity()) { form.classList.add('was-validated'); return; }
+                form.classList.remove('was-validated');
+
+                const formData = getFormData(form);
+                const studentData = { ...formData, password: formData.studentPassword };
+                delete studentData.studentPassword;
+
+                try {
+                    if (editId) {
+                        if (!studentData.password) {
+                            delete studentData.password;
+                        }
+                        await update(ref(db, `students/${editId}`), studentData);
+                        Toast.fire({ icon: 'success', title: 'সফলভাবে আপডেট হয়েছে' });
+                    } 
+                    else {
+                        const counterRef = ref(db, 'studentIdCounter');
+                        const { committed, snapshot } = await runTransaction(counterRef, (val) => (val || 100) + 1);
+                        if (!committed) throw new Error("স্টুডেন্ট আইডি তৈরি করা যায়নি।");
+                        
+                        studentData.studentId = `SIT-${snapshot.val()}`;
+                        studentData.isActive = true;
+                        studentData.createdAt = serverTimestamp();
+
+                        const referralId = studentData.referralId.trim();
+                        if(referralId && window.appState.settings && window.appState.settings[0]?.affiliateFee > 0) {
+                            const fee = parseFloat(window.appState.settings[0].affiliateFee);
+                            const referrer = (window.appState.students || []).find(s => s.studentId === referralId);
+                            if(referrer) {
+                                const referrerRef = ref(db, `students/${referrer.id}/affiliateBalance`);
+                                await runTransaction(referrerRef, (balance) => (balance || 0) + fee);
+                                await push(ref(db, 'referrals'), {
+                                    referrerId: referralId, 
+                                    newStudentId: studentData.studentId, 
+                                    newStudentName: studentData.studentName,
+                                    commissionAmount: fee, 
+                                    date: serverTimestamp()
+                                });
                             }
-                        });
+                        }
+                        await push(ref(db, 'students'), studentData);
+                        Toast.fire({ icon: 'success', title: 'নতুন শিক্ষার্থী যোগ হয়েছে' });
                     }
+                    
+                    form.reset();
+                    studentPasswordField.required = true;
+                    document.getElementById('studentEditId').value = '';
+                    document.querySelectorAll('input[type="date"]').forEach(field => field.value = today);
+
+                } catch (error) {
+                    Swal.fire({ icon: 'error', title: 'ত্রুটি', text: `তথ্য সেভ করা যায়নি: ${error.message}` });
                 }
-                handleFormSubmit(e.target, 'students');
             });
+
             document.getElementById('installmentsForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'installments'); });
             document.getElementById('expenseForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'expenses'); });
 
@@ -319,211 +387,112 @@
             const calculateDue = () => { const total = parseFloat(installmentTotalEl.value) || 0, paid = parseFloat(installmentPaidEl.value) || 0; installmentDueEl.value = total - paid; };
             installmentTotalEl.addEventListener('input', calculateDue); installmentPaidEl.addEventListener('input', calculateDue);
             
-            const updateDashboard = () => { if (!window.appState.students) return; const t = new Date().getMonth(), e = new Date().getFullYear(); const a = (a, o) => a.filter(n => new Date(n[o]).getMonth() === t && new Date(n[o]).getFullYear() === e); const o = a(window.appState.students, "studentDate").reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const n = window.appState.students.reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const i = (window.appState.expenses ? a(window.appState.expenses, "expenseDate") : []).reduce((t, e) => t + parseFloat(e.expenseAmount || 0), 0); const d = (window.appState.withdrawalRequests || []).filter(req => req.status === 'Completed').reduce((t, e) => t + parseFloat(e.amount || 0), 0); const l = a(window.appState.withdrawalRequests || [], "requestDate").filter(req => req.status === 'Completed').reduce((t, e) => t + parseFloat(e.amount || 0), 0); document.getElementById("dashMonthlyIncome").textContent = `৳ ${o.toLocaleString()}`; document.getElementById("dashTotalIncome").textContent = `৳ ${n.toLocaleString()}`; document.getElementById("dashMonthlyExpense").textContent = `৳ ${i.toLocaleString()}`; document.getElementById("dashMonthlyWithdrawal").textContent = `৳ ${l.toLocaleString()}`; document.getElementById("dashTotalWithdrawal").textContent = `৳ ${d.toLocaleString()}`; document.getElementById("dashTotalStudents").textContent = window.appState.students.length; };
-            document.getElementById('generateReportBtn').addEventListener('click', () => {/* Unchanged */});
+            const updateDashboard = () => { const studentList = window.appState.students || []; const expenseList = window.appState.expenses || []; const withdrawalList = (window.appState.withdrawalRequests || []).filter(req => req.status === 'Completed'); if (!studentList.length && !expenseList.length) return; const t = new Date().getMonth(), e = new Date().getFullYear(); const a = (a, o) => a.filter(n => { const d = n[o] ? new Date(n[o]) : new Date(); return d.getMonth() === t && d.getFullYear() === e; }); const o = a(studentList, "studentDate").reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const n = studentList.reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const i = a(expenseList, "expenseDate").reduce((t, e) => t + parseFloat(e.expenseAmount || 0), 0); const d = withdrawalList.reduce((t, e) => t + parseFloat(e.amount || 0), 0); const l = a(withdrawalList, "requestDate").reduce((t, e) => t + parseFloat(e.amount || 0), 0); document.getElementById("dashMonthlyIncome").textContent = `৳ ${o.toLocaleString()}`; document.getElementById("dashTotalIncome").textContent = `৳ ${n.toLocaleString()}`; document.getElementById("dashMonthlyExpense").textContent = `৳ ${i.toLocaleString()}`; document.getElementById("dashMonthlyWithdrawal").textContent = `৳ ${l.toLocaleString()}`; document.getElementById("dashTotalWithdrawal").textContent = `৳ ${d.toLocaleString()}`; document.getElementById("dashTotalStudents").textContent = studentList.length; };
             
-            const loadSettings = (settingsData) => { 
-                const settings = settingsData.length > 0 ? settingsData[0] : { name: 'শফিকুল আইটি', affiliateFee: 0 };
-                window.appState.currentSettings = settings;
-                document.getElementById("settingSchoolName").value = settings.name; 
-                document.getElementById("loginSchoolName").textContent = settings.name;
-                document.getElementById('schoolSettingsForm').dataset.docId = settings.id;
-                document.getElementById('affiliateFee').value = settings.affiliateFee || 0;
-                document.getElementById('affiliateSettingsForm').dataset.docId = settings.id;
-                const nameParts = settings.name.split(" "); document.getElementById("sidebarSchoolName").textContent = nameParts.length > 1 ? `${nameParts[0]} ${nameParts[1]}` : name;
-            };
+            const loadSettings = (settingsData) => { const settings = settingsData && settingsData.length > 0 ? settingsData[0] : { name: 'শফিকুল আইটি', affiliateFee: 0 }; window.appState.currentSettings = settings; document.getElementById("settingSchoolName").value = settings.name; document.getElementById("loginSchoolName").textContent = settings.name; document.getElementById('schoolSettingsForm').dataset.docId = settings.id; document.getElementById('affiliateFee').value = settings.affiliateFee || 0; document.getElementById('affiliateSettingsForm').dataset.docId = settings.id; const nameParts = (settings.name || "শফিকুল আইটি").split(" "); document.getElementById("sidebarSchoolName").textContent = nameParts.length > 1 ? `${nameParts[0]} ${nameParts[1]}` : settings.name; };
             
-            document.getElementById('schoolSettingsForm').addEventListener('submit', async e => {
-                e.preventDefault();
-                const docId = e.target.dataset.docId;
-                const settingsData = { name: document.getElementById("settingSchoolName").value, address: document.getElementById("settingSchoolAddress").value, mobile: document.getElementById("settingSchoolMobile").value, email: document.getElementById("settingSchoolEmail").value, affiliateFee: parseFloat(document.getElementById('affiliateFee').value) || 0 };
-                try {
-                    if (docId) { await set(ref(db, `settings/${docId}`), settingsData); }
-                    else { await push(ref(db, `settings`), settingsData); }
-                    Toast.fire({ icon: 'success', title: 'সেটিংস সেভ হয়েছে!' });
-                } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সেটিংস সেভ করা যায়নি।' }); }
-            });
-
-            document.getElementById('affiliateSettingsForm').addEventListener('submit', async e => {
-                e.preventDefault();
-                const docId = window.appState.currentSettings?.id;
-                const fee = parseFloat(document.getElementById('affiliateFee').value) || 0;
-                if(docId) {
-                    await update(ref(db, `settings/${docId}`), { affiliateFee: fee });
-                    Toast.fire({ icon: 'success', title: 'অ্যাফিলিয়েট ফি সেভ হয়েছে!' });
-                } else { Toast.fire({ icon: 'error', title: 'প্রথমে স্কুল সেটিংস সেভ করুন' }); }
-            });
-
-            document.getElementById('changeCredentialsForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const currentPass = document.getElementById('currentPassword').value;
-                const newPass = document.getElementById('newPassword').value;
-                const confirmPass = document.getElementById('confirmNewPassword').value;
-                if (newPass && newPass !== confirmPass) { return Swal.fire({ icon: 'error', title: 'ভুল', text: 'নতুন পাসওয়ার্ড দুটি মিলছে না।' }); }
-                const user = auth.currentUser;
-                const credential = EmailAuthProvider.credential(user.email, currentPass);
-                try {
-                    await reauthenticateWithCredential(user, credential);
-                    if (newPass) {
-                        await updatePassword(user, newPass);
-                        Toast.fire({ icon: 'success', title: 'পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!' });
-                    }
-                    e.target.reset();
-                } catch (error) { Swal.fire({ icon: 'error', title: 'ভুল', text: 'আপনার বর্তমান পাসওয়ার্ড সঠিক নয়।' }); }
-            });
-
-            document.getElementById('studentSearchForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const searchId = document.getElementById('searchInput').value.trim();
-                const resultDiv = document.getElementById('searchResult');
-                if (!searchId) { resultDiv.innerHTML = '<div class="alert alert-warning">অনুগ্রহ করে একটি স্টুডেন্ট আইডি লিখুন।</div>'; return; }
-                const studentData = window.appState.students.find(s => s.studentId === searchId);
-                if (!studentData) { resultDiv.innerHTML = '<div class="alert alert-danger">এই আইডি দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।</div>'; return; }
-                const installmentsHistory = window.appState.installments.filter(i => i.installmentStudentName === studentData.studentId);
-                let html = `<div class="card" id="student-profile-card"><div class="card-header bg-primary text-white"><h4>শিক্ষার্থীর প্রোফাইল</h4></div><div class="card-body"><ul class="list-group list-group-flush"><li class="list-group-item"><strong>স্টুডেন্ট আইডি:</strong> ${studentData.studentId}</li><li class="list-group-item"><strong>নাম:</strong> ${studentData.studentName}</li><li class="list-group-item"><strong>পিতার নাম:</strong> ${studentData.studentFatherName}</li><li class="list-group-item"><strong>ঠিকানা:</strong> ${studentData.studentAddress}</li><li class="list-group-item"><strong>ভর্তি তারিখ:</strong> ${studentData.studentDate}</li><li class="list-group-item"><strong>সার্ভিস:</strong> ${studentData.studentService}</li><li class="list-group-item"><strong>মোট ফি:</strong> ৳ ${studentData.studentAmount}</li></ul><h5 class="mt-4">কিস্তির ইতিহাস</h5>`;
-                if (installmentsHistory.length > 0) {
-                    html += `<table class="table table-bordered table-sm"><thead><tr><th>তারিখ</th><th>মোট</th><th>জমা</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>স্ট্যাটাস</th></tr></thead><tbody>`;
-                    installmentsHistory.forEach(inst => { html += `<tr><td>${inst.installmentDate}</td><td>${inst.installmentTotal}</td><td>${inst.installmentPaid}</td><td>${inst.installmentDue}</td><td>${inst.installmentNextDate}</td><td><span class="badge bg-${inst.installmentStatus === 'Paid' ? 'success' : 'danger'}">${inst.installmentStatus}</span></td></tr>`; });
-                    html += '</tbody></table>';
-                } else { html += '<p>এই শিক্ষার্থীর কোনো কিস্তির তথ্য পাওয়া যায়নি।</p>'; }
-                html += '</div></div>';
-                resultDiv.innerHTML = html;
-            });
+            document.getElementById('schoolSettingsForm').addEventListener('submit', async e => { e.preventDefault(); const docId = e.target.dataset.docId; const settingsData = { name: document.getElementById("settingSchoolName").value, address: document.getElementById("settingSchoolAddress").value, mobile: document.getElementById("settingSchoolMobile").value, email: document.getElementById("settingSchoolEmail").value, affiliateFee: parseFloat(document.getElementById('affiliateFee').value) || 0 }; try { if (docId) { await set(ref(db, `settings/${docId}`), settingsData); } else { await push(ref(db, `settings`), settingsData); } Toast.fire({ icon: 'success', title: 'সেটিংস সেভ হয়েছে!' }); } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সেটিংস সেভ করা যায়নি।' }); } });
+            document.getElementById('affiliateSettingsForm').addEventListener('submit', async e => { e.preventDefault(); const docId = window.appState.currentSettings?.id; const fee = parseFloat(document.getElementById('affiliateFee').value) || 0; if(docId) { await update(ref(db, `settings/${docId}`), { affiliateFee: fee }); Toast.fire({ icon: 'success', title: 'অ্যাফিলিয়েট ফি সেভ হয়েছে!' }); } else { Toast.fire({ icon: 'error', title: 'প্রথমে স্কুল সেটিংস সেভ করুন' }); } });
+            document.getElementById('changeCredentialsForm').addEventListener('submit', async (e) => { e.preventDefault(); const currentPass = document.getElementById('currentPassword').value; const newPass = document.getElementById('newPassword').value; const confirmPass = document.getElementById('confirmNewPassword').value; if (newPass && newPass !== confirmPass) { return Swal.fire({ icon: 'error', title: 'ভুল', text: 'নতুন পাসওয়ার্ড দুটি মিলছে না।' }); } const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPass); try { await reauthenticateWithCredential(user, credential); if (newPass) { await updatePassword(user, newPass); Toast.fire({ icon: 'success', title: 'পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!' }); } e.target.reset(); } catch (error) { Swal.fire({ icon: 'error', title: 'ভুল', text: 'আপনার বর্তমান পাসওয়ার্ড সঠিক নয়।' }); } });
+            document.getElementById('studentSearchForm').addEventListener('submit', (e) => { e.preventDefault(); const searchId = document.getElementById('searchInput').value.trim().toLowerCase(); const resultDiv = document.getElementById('searchResult'); if (!searchId) { resultDiv.innerHTML = '<div class="alert alert-warning">অনুগ্রহ করে একটি স্টুডেন্ট আইডি লিখুন।</div>'; return; } const studentList = window.appState.students || []; const studentData = studentList.find(s => s.studentId && s.studentId.toLowerCase() === searchId); if (!studentData) { resultDiv.innerHTML = '<div class="alert alert-danger">এই আইডি দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।</div>'; return; } const installmentsHistory = (window.appState.installments || []).filter(i => i.installmentStudentName === studentData.studentId); let html = `<div class="card" id="student-profile-card"><div class="card-header bg-primary text-white"><h4>শিক্ষার্থীর প্রোফাইল</h4></div><div class="card-body"><ul class="list-group list-group-flush"><li class="list-group-item"><strong>স্টুডেন্ট আইডি:</strong> ${studentData.studentId}</li><li class="list-group-item"><strong>নাম:</strong> ${studentData.studentName}</li><li class="list-group-item"><strong>পিতার নাম:</strong> ${studentData.studentFatherName}</li><li class="list-group-item"><strong>ঠিকানা:</strong> ${studentData.studentAddress}</li><li class="list-group-item"><strong>ভর্তি তারিখ:</strong> ${studentData.studentDate}</li><li class="list-group-item"><strong>সার্ভিস:</strong> ${studentData.studentService}</li><li class="list-group-item"><strong>মোট ফি:</strong> ৳ ${studentData.studentAmount}</li></ul><h5 class="mt-4">কিস্তির ইতিহাস</h5>`; if (installmentsHistory.length > 0) { html += `<table class="table table-bordered table-sm"><thead><tr><th>তারিখ</th><th>মোট</th><th>জমা</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>স্ট্যাটাস</th></tr></thead><tbody>`; installmentsHistory.forEach(inst => { html += `<tr><td>${inst.installmentDate}</td><td>${inst.installmentTotal}</td><td>${inst.installmentPaid}</td><td>${inst.installmentDue}</td><td>${inst.installmentNextDate}</td><td><span class="badge bg-${inst.installmentStatus === 'Paid' ? 'success' : 'danger'}">${inst.installmentStatus}</span></td></tr>`; }); html += '</tbody></table>'; } else { html += '<p>এই শিক্ষার্থীর কোনো কিস্তির তথ্য পাওয়া যায়নি।</p>'; } html += '</div></div>'; resultDiv.innerHTML = html; });
             
             document.getElementById('affiliateLoginForm').addEventListener('submit', async e => {
                 e.preventDefault();
                 const studentId = document.getElementById('affiliateStudentId').value.trim();
-                if (!window.appState.students) return;
-                const student = window.appState.students.find(s => s.studentId === studentId);
-                if(!student) {
-                    Swal.fire({ icon: 'error', title: 'ভুল আইডি', text: 'এই আইডি দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।' });
-                } else {
-                    renderAffiliateDashboard(student);
-                    loginPage.style.display = 'none';
-                    affiliateDashboardPage.style.display = 'block';
-                }
+                const password = document.getElementById('affiliatePassword').value;
+                const studentList = window.appState.students || [];
+                if (!studentList.length && studentId) { Swal.fire({ icon: 'info', title: 'লোড হচ্ছে...', text: 'ডেটা লোড হচ্ছে, অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।' }); return; }
+                const student = studentList.find(s => s.studentId === studentId && s.password === password);
+                if (!student) { Swal.fire({ icon: 'error', title: 'লগইন ব্যর্থ', text: 'আপনার দেওয়া স্টুডেন্ট আইডি বা পাসওয়ার্ড সঠিক নয়।' }); } 
+                else { renderAffiliateDashboard(student); loginPage.style.display = 'none'; affiliateDashboardPage.style.display = 'block'; }
             });
 
             function renderAffiliateDashboard(student) {
-                const referrals = window.appState.referrals?.filter(r => r.referrerId === student.studentId) || [];
-                const withdrawalHistory = window.appState.withdrawalRequests?.filter(r => r.studentId === student.studentId) || [];
-
+                const referrals = (window.appState.referrals || []).filter(r => r.referrerId === student.studentId);
+                const withdrawalHistory = (window.appState.withdrawalRequests || []).filter(r => r.studentId === student.studentId);
                 let html = `
                     <button id="affiliateLogout" class="btn btn-danger mb-3">লগইন পেজে ফিরে যান</button>
                     <div class="card">
                         <div class="card-header bg-success text-white"><h3>${student.studentName} - অ্যাফিলিয়েট ড্যাশবোর্ড</h3></div>
                         <div class="card-body">
-                            <div class="row text-center">
-                                <div class="col-md-6"><div class="card bg-light p-3"><h4>বর্তমান ব্যালেন্স</h4><h2 class="fw-bold">৳ ${student.affiliateBalance || 0}</h2></div></div>
-                                <div class="col-md-6"><div class="card bg-light p-3"><h4>আপনার রেফারেল আইডি</h4><h2 class="fw-bold text-primary">${student.studentId}</h2></div></div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col-md-7">
-                                    <h5>আপনার রেফারেলের তালিকা</h5>
-                                    <table class="table table-sm table-bordered"><thead><tr><th>ছাত্রের নাম</th><th>কমিশন</th><th>তারিখ</th></tr></thead><tbody>
-                                    ${referrals.length > 0 ? referrals.map(r => `<tr><td>${r.newStudentName}</td><td>৳ ${r.commissionAmount}</td><td>${new Date(r.date).toLocaleDateString('bn-BD')}</td></tr>`).join('') : '<tr><td colspan="3">কোনো রেফারেল পাওয়া যায়নি।</td></tr>'}
-                                    </tbody></table>
-                                </div>
-                                <div class="col-md-5">
-                                    <h5>টাকা উত্তোলন করুন</h5>
-                                    <form id="withdrawalRequestForm">
-                                        <div class="form-floating mb-2"><input type="number" id="withdrawalAmount" class="form-control" placeholder="টাকার পরিমাণ" max="${student.affiliateBalance || 0}" required><label>টাকার পরিমাণ</label></div>
-                                        <div class="form-floating mb-2"><select id="withdrawalMethod" class="form-select"><option>বিকাশ</option><option>নগদ</option></select><label>মাধ্যম</label></div>
-                                        <div class="form-floating mb-2"><input type="text" id="withdrawalNumber" class="form-control" placeholder="একাউন্ট নম্বর" required><label>একাউন্ট নম্বর</label></div>
-                                        <button type="submit" class="btn btn-success w-100">আবেদন করুন</button>
-                                    </form>
-                                </div>
-                            </div>
-                             <div class="row mt-4">
-                                <div class="col-12">
-                                    <h5>আপনার উত্তোলনের ইতিহাস</h5>
-                                    <table class="table table-sm table-bordered">
-                                        <thead><tr><th>তারিখ</th><th>টাকা</th><th>মাধ্যম</th><th>একাউন্ট</th><th>স্ট্যাটাস</th></tr></thead>
-                                        <tbody id="withdrawalHistoryBody">
-                                            ${withdrawalHistory.length > 0 ? withdrawalHistory.map(r => {
-                                                const status = r.status === 'Pending' ? 'warning' : r.status === 'Completed' ? 'success' : 'danger';
-                                                return `<tr>
-                                                    <td>${new Date(r.requestDate).toLocaleDateString('bn-BD')}</td>
-                                                    <td>৳ ${r.amount}</td>
-                                                    <td>${r.method}</td>
-                                                    <td>${r.accountNumber}</td>
-                                                    <td><span class="badge bg-${status}">${r.status}</span></td>
-                                                </tr>`
-                                            }).join('') : '<tr><td colspan="5">কোনো উত্তোলনের ইতিহাস পাওয়া যায়নি।</td></tr>'}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <div class="row text-center g-3"><div class="col-md-6"><div class="card bg-light p-3"><h4>বর্তমান ব্যালেন্স</h4><h2 class="fw-bold">৳ ${student.affiliateBalance || 0}</h2></div></div><div class="col-md-6"><div class="card bg-light p-3"><h4>আপনার রেফারেল আইডি</h4><h2 class="fw-bold text-primary">${student.studentId}</h2></div></div></div>
+                            <div class="row mt-4"><div class="col-md-7"><h5>আপনার রেফারেলের তালিকা</h5><div class="table-responsive"><table class="table table-sm table-bordered"><thead><tr><th>ছাত্রের নাম</th><th>কমিশন</th><th>তারিখ</th></tr></thead><tbody>${referrals.length > 0 ? referrals.map(r => `<tr><td>${r.newStudentName}</td><td>৳ ${r.commissionAmount}</td><td>${new Date(r.date).toLocaleDateString('bn-BD')}</td></tr>`).join('') : '<tr><td colspan="3">কোনো রেফারেল পাওয়া যায়নি।</td></tr>'}</tbody></table></div></div><div class="col-md-5"><h5>টাকা উত্তোলন করুন</h5><form id="withdrawalRequestForm"><div class="form-floating mb-2"><input type="number" id="withdrawalAmount" class="form-control" placeholder="টাকার পরিমাণ" max="${student.affiliateBalance || 0}" required><label>টাকার পরিমাণ</label></div><div class="form-floating mb-2"><select id="withdrawalMethod" class="form-select"><option>বিকাশ</option><option>নগদ</option></select><label>মাধ্যম</label></div><div class="form-floating mb-2"><input type="text" id="withdrawalNumber" class="form-control" placeholder="একাউন্ট নম্বর" required><label>একাউন্ট নম্বর</label></div><button type="submit" class="btn btn-success w-100">আবেদন করুন</button></form></div></div>
+                            <div class="row mt-4"><div class="col-12"><h5>আপনার উত্তোলনের ইতিহাস</h5><div class="table-responsive"><table class="table table-sm table-bordered"><thead><tr><th>তারিখ</th><th>টাকা</th><th>মাধ্যম</th><th>একাউন্ট</th><th>স্ট্যাটাস</th></tr></thead><tbody>${withdrawalHistory.length > 0 ? withdrawalHistory.map(r => { const status = r.status === 'Pending' ? 'warning' : r.status === 'Completed' ? 'success' : 'danger'; return `<tr><td>${new Date(r.requestDate).toLocaleDateString('bn-BD')}</td><td>৳ ${r.amount}</td><td>${r.method}</td><td>${r.accountNumber}</td><td><span class="badge bg-${status}">${r.status}</span></td></tr>` }).join('') : '<tr><td colspan="5">কোনো উত্তোলনের ইতিহাস পাওয়া যায়নি।</td></tr>'}</tbody></table></div></div></div>
+                            <div class="row mt-4"><div class="col-md-8 mx-auto"><div class="card"><div class="card-header"><h5>পাসওয়ার্ড পরিবর্তন করুন</h5></div><div class="card-body"><form id="affiliateChangePasswordForm"><div class="form-floating mb-3"><input type="password" id="affCurrentPassword" class="form-control" required><label>বর্তমান পাসওয়ার্ড</label></div><div class="form-floating mb-3"><input type="password" id="affNewPassword" class="form-control" required><label>নতুন পাসওয়ার্ড</label></div><div class="form-floating mb-3"><input type="password" id="affConfirmPassword" class="form-control" required><label>নতুন পাসওয়ার্ড নিশ্চিত করুন</label></div><button type="submit" class="btn btn-primary w-100">আপডেট করুন</button></form></div></div></div></div>
                         </div>
                     </div>`;
                 affiliateDashboardPage.innerHTML = html;
-                document.getElementById('affiliateLogout').addEventListener('click', () => {
-                    affiliateDashboardPage.style.display = 'none'; loginPage.style.display = 'flex';
-                });
-
-                document.getElementById('withdrawalRequestForm').addEventListener('submit', async e => {
-                    e.preventDefault();
-                    const amount = parseFloat(document.getElementById('withdrawalAmount').value);
-                    const currentBalance = student.affiliateBalance || 0;
-                    if (amount > currentBalance) { 
-                        Swal.fire({icon: 'error', title: 'ব্যালেন্স নেই', text: 'আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই।'}); 
+                document.getElementById('affiliateLogout').addEventListener('click', () => { affiliateDashboardPage.innerHTML = ''; affiliateDashboardPage.style.display = 'none'; loginPage.style.display = 'flex'; });
+                
+                document.getElementById('withdrawalRequestForm').addEventListener('submit', async e => { 
+                    e.preventDefault(); 
+                    const amount = parseFloat(document.getElementById('withdrawalAmount').value); 
+                    const currentBalance = student.affiliateBalance || 0; 
+                    if (amount > currentBalance || amount <= 0) { 
+                        Swal.fire({icon: 'error', title: 'ভুল পরিমাণ', text: 'আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই অথবা টাকার পরিমাণ সঠিক নয়।'}); 
                         return; 
-                    }
-                    
-                    const requestData = {
+                    } 
+                    const requestData = { 
                         studentId: student.studentId, 
                         studentName: student.studentName, 
-                        amount: amount,
+                        amount, 
                         method: document.getElementById('withdrawalMethod').value, 
-                        accountNumber: document.getElementById('withdrawalNumber').value,
+                        accountNumber: document.getElementById('withdrawalNumber').value, 
                         status: 'Pending', 
-                        requestDate: serverTimestamp()
-                    };
-
+                        requestDate: serverTimestamp() 
+                    }; 
                     try {
-                        const newBalance = currentBalance - amount;
-                        const studentRef = ref(db, `students/${student.id}/affiliateBalance`);
-                        
-                        // দুটি কাজ একসাথে করা হচ্ছে
-                        await set(studentRef, newBalance); // ব্যালেন্স কমানো
-                        await push(ref(db, 'withdrawalRequests'), requestData); // অনুরোধ যোগ করা
-                        
-                        Swal.fire({icon: 'success', title: 'সফল', text: 'আপনার আবেদনটি জমা হয়েছে।'});
-                        // ড্যাশবোর্ড রি-রেন্ডার করে নতুন ব্যালেন্স ও ইতিহাস দেখানোর জন্য
-                        const updatedStudent = {...student, affiliateBalance: newBalance};
-                        renderAffiliateDashboard(updatedStudent);
-
+                        await push(ref(db, 'withdrawalRequests'), requestData); 
+                        Swal.fire({icon: 'success', title: 'সফল', text: 'আপনার আবেদনটি সফলভাবে জমা হয়েছে। অ্যাডমিন অনুমোদন করলে টাকা পাঠানো হবে।'});
+                        e.target.reset();
                     } catch (error) { 
                         Swal.fire({icon: 'error', title: 'ত্রুটি', text: 'আবেদন করা সম্ভব হয়নি। আবার চেষ্টা করুন।'}); 
-                    }
+                    } 
                 });
+                
+                document.getElementById('affiliateChangePasswordForm').addEventListener('submit', async e => { e.preventDefault(); const currentPass = document.getElementById('affCurrentPassword').value; const newPass = document.getElementById('affNewPassword').value; const confirmPass = document.getElementById('affConfirmPassword').value; if (currentPass !== student.password) { return Swal.fire({ icon: 'error', title: 'ভুল', text: 'আপনার বর্তমান পাসওয়ার্ড সঠিক নয়।' }); } if (!newPass || newPass !== confirmPass) { return Swal.fire({ icon: 'error', title: 'ভুল', text: 'নতুন পাসওয়ার্ড দুটি মিলছে না বা খালি রয়েছে।' }); } try { await update(ref(db, `students/${student.id}`), { password: newPass }); student.password = newPass; Swal.fire({ icon: 'success', title: 'সফল', text: 'আপনার পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।' }); e.target.reset(); } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'পাসওয়ার্ড পরিবর্তন করা সম্ভব হয়নি।' }); } });
             };
-            
+
             async function handleWithdrawalAction(id, action) {
                 const requestRef = ref(db, `withdrawalRequests/${id}`);
-                const request = window.appState.withdrawalRequests.find(r => r.id === id);
-                if (!request) return;
+                const request = (window.appState.withdrawalRequests || []).find(r => r.id === id);
+                if (!request || request.status !== 'Pending') return;
 
                 const newStatus = action === 'approve-withdrawal' ? 'Completed' : 'Rejected';
 
                 try {
-                    // যদি অ্যাডমিন অনুরোধটি বাতিল করে, তাহলে ছাত্রকে টাকা ফেরত দিতে হবে
-                    if (newStatus === 'Rejected' && request.status !== 'Rejected') {
-                        const student = window.appState.students.find(s => s.studentId === request.studentId);
+                    if (newStatus === 'Completed') {
+                        const student = (window.appState.students || []).find(s => s.studentId === request.studentId);
                         if(student){
                             const studentRef = ref(db, `students/${student.id}/affiliateBalance`);
-                            const currentBalance = student.affiliateBalance || 0;
-                            const newBalance = currentBalance + request.amount;
-                            await set(studentRef, newBalance);
+                            const { committed } = await runTransaction(studentRef, (balance) => {
+                                const currentBalance = balance || 0;
+                                const newBalance = currentBalance - parseFloat(request.amount);
+                                if (newBalance < 0) {
+                                    return; // Transaction abort
+                                }
+                                return newBalance;
+                            });
+                            if (!committed) {
+                                throw new Error("ছাত্রের অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই।");
+                            }
+                        } else {
+                             throw new Error("ছাত্রকে খুঁজে পাওয়া যায়নি।");
                         }
                     }
-                    // স্ট্যাটাস আপডেট
                     await update(requestRef, { status: newStatus });
                     Toast.fire({ icon: 'success', title: `অনুরোধটি ${newStatus} হয়েছে` });
                 } catch (error) { 
-                    Swal.fire({icon: 'error', title: 'ত্রুটি', text: 'কাজটি সম্পন্ন করা যায়নি।'}); 
+                    Swal.fire({icon: 'error', title: 'ত্রুটি', text: `কাজটি সম্পন্ন করা যায়নি: ${error.message}`}); 
                 }
             };
+
+            const generateTable = (headers, rows, emptyMessage) => { if (rows.length === 0) return `<p>${emptyMessage}</p>`; let table = '<div class="table-responsive"><table class="table table-bordered table-sm"><thead><tr>'; headers.forEach(h => table += `<th>${h}</th>`); table += '</tr></thead><tbody>'; rows.forEach(row => { table += '<tr>'; row.forEach(cell => table += `<td>${cell}</td>`); table += '</tr>'; }); table += '</tbody></table></div>'; return table; };
+            document.getElementById('generateReportBtn').addEventListener('click', () => { const startDate = document.getElementById('reportStartDate').value; const endDate = document.getElementById('reportEndDate').value; const outputDiv = document.getElementById('report-output'); if (!startDate || !endDate) { Swal.fire({ icon: 'warning', title: 'তারিখ দিন', text: 'অনুগ্রহ করে রিপোর্টের জন্য শুরু এবং শেষের তারিখ নির্বাচন করুন।' }); return; } const start = new Date(startDate); const end = new Date(endDate); end.setHours(23, 59, 59, 999); const inRange = (dateStr) => { if(!dateStr) return false; const date = new Date(dateStr); return date >= start && date <= end; }; const incomeTransactions = (window.appState.students || []).filter(s => inRange(s.studentDate)); const totalIncome = incomeTransactions.reduce((sum, s) => sum + parseFloat(s.studentAmount || 0), 0); const expenseTransactions = (window.appState.expenses || []).filter(e => inRange(e.expenseDate)); const totalExpense = expenseTransactions.reduce((sum, e) => sum + parseFloat(e.expenseAmount || 0), 0); const withdrawalTransactions = (window.appState.withdrawalRequests || []).filter(w => w.status === 'Completed' && inRange(w.requestDate)); const totalWithdrawal = withdrawalTransactions.reduce((sum, w) => sum + parseFloat(w.amount || 0), 0); const netProfit = totalIncome - totalExpense - totalWithdrawal; const profitClass = netProfit >= 0 ? 'text-success' : 'text-danger'; let html = `<div class="card"><div class="card-header"><h4>রিপোর্ট (${new Date(startDate).toLocaleDateString('bn-BD')} - ${new Date(endDate).toLocaleDateString('bn-BD')})</h4></div><div class="card-body"><div class="row g-3 text-center mb-4"><div class="col-md-3"><div class="p-3 bg-light border rounded"><h5>মোট আয়</h5><h4 class="text-success">৳ ${totalIncome.toLocaleString()}</h4></div></div><div class="col-md-3"><div class="p-3 bg-light border rounded"><h5>মোট খরচ</h5><h4 class="text-danger">৳ ${totalExpense.toLocaleString()}</h4></div></div><div class="col-md-3"><div class="p-3 bg-light border rounded"><h5>মোট উত্তোলন</h5><h4 class="text-warning">৳ ${totalWithdrawal.toLocaleString()}</h4></div></div><div class="col-md-3"><div class="p-3 bg-light border rounded"><h5>নেট লাভ/ক্ষতি</h5><h4 class="${profitClass}">৳ ${netProfit.toLocaleString()}</h4></div></div></div><hr><h5>আয়ের বিবরণ (নতুন ভর্তি)</h5>${generateTable(['তারিখ', 'ছাত্রের আইডি', 'নাম', 'সার্ভিস', 'টাকা'], incomeTransactions.map(s => [s.studentDate, s.studentId, s.studentName, s.studentService, `৳ ${parseFloat(s.studentAmount).toLocaleString()}`]), 'এই সময়ে কোনো আয় হয়নি।')}<h5 class="mt-4">খরচের বিবরণ</h5>${generateTable(['তারিখ', 'খরচের খাত', 'টাকা'], expenseTransactions.map(e => [e.expenseDate, e.expenseCategory, `৳ ${parseFloat(e.expenseAmount).toLocaleString()}`]), 'এই সময়ে কোনো খরচ হয়নি।')}<h5 class="mt-4">উত্তোলনের বিবরণ (সম্পন্ন)</h5>${generateTable(['তারিখ', 'ছাত্রের আইডি', 'নাম', 'টাকা'], withdrawalTransactions.map(w => [new Date(w.requestDate).toLocaleDateString('bn-BD'), w.studentId, w.studentName, `৳ ${parseFloat(w.amount).toLocaleString()}`]), 'এই সময়ে কোনো উত্তোলন হয়নি।')}</div></div>`; outputDiv.innerHTML = html; });
+            const usStates = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+            const populateStatesDropdown = () => { const stateSelect = document.getElementById('ssnState'); if (stateSelect) { stateSelect.innerHTML = usStates.map(state => `<option value="${state}">${state}</option>`).join(''); } }; populateStatesDropdown();
+            document.getElementById('accountStatus').addEventListener('change', (e) => { const activationDateWrapper = document.getElementById('activationDateWrapper'); activationDateWrapper.style.display = e.target.value === 'রানিং' ? 'block' : 'none'; });
+            document.getElementById('accountsForm').addEventListener('reset', () => { document.getElementById('activationDateWrapper').style.display = 'none'; });
         }());
     </script>
 </body>
