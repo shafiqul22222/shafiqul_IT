@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শফিকুল আইটি এন্ড ট্রেইনিং সেন্টার - স্কুল ম্যানেজমেন্ট সফটওয়্যার</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        :root { --primary-color: #0d6efd; --secondary-color: #f8f9fa; --sidebar-bg: #212529; --sidebar-link-color: #adb5bd; --sidebar-link-hover: #fff; }
+        body { background-color: var(--secondary-color); font-family: 'Noto Sans Bengali', sans-serif; }
+        .login-page { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-color), #00c6ff); }
+        .login-box { width: 100%; max-width: 400px; padding: 40px; background: rgba(255, 255, 255, 0.9); border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .wrapper { display: flex; width: 100%; align-items: stretch; }
+        #sidebar { min-width: 250px; max-width: 250px; background: var(--sidebar-bg); color: #fff; transition: all 0.3s; }
+        #sidebar .sidebar-header { padding: 20px; background: #343a40; text-align: center; }
+        #sidebar ul.components { padding: 20px 0; max-height: calc(100vh - 70px); overflow-y: auto; }
+        #sidebar ul li a { padding: 15px; font-size: 1.1em; display: block; color: var(--sidebar-link-color); text-decoration: none; }
+        #sidebar ul li a:hover { color: var(--sidebar-link-hover); background: var(--primary-color); }
+        #sidebar ul li.active > a, a[aria-expanded="true"] { color: #fff; background: var(--primary-color); }
+        #content { width: 100%; padding: 20px; min-height: 100vh; transition: all 0.3s; }
+        .overlay { display: none; position: fixed; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7); z-index: 1000; opacity: 0; transition: all 0.3s ease-in-out; }
+        .overlay.active { display: block; opacity: 1; }
+        #bottom-nav { display: none; }
+        @media (max-width: 768px) {
+            #sidebar { position: fixed; z-index: 1001; height: 100%; margin-left: -250px; }
+            #sidebar.active { margin-left: 0; }
+            #content { padding-bottom: 80px; }
+            #sidebarCollapse { display: none; }
+            #bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background-color: #ffffff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); justify-content: space-around; align-items: center; z-index: 999; }
+            #bottom-nav a { color: #888; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; padding: 5px 0; flex-grow: 1; }
+            #bottom-nav a i { font-size: 1.5rem; margin-bottom: 4px; }
+            #bottom-nav a.active { color: var(--primary-color); }
+            #bottom-nav .fab-button { width: 60px; height: 60px; background-color: var(--primary-color); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; transform: translateY(-20px); box-shadow: 0 -2px 5px rgba(0,0,0,0.2); border: 4px solid white; }
+            #bottom-nav .fab-button i { font-size: 1.8rem; margin: 0; }
+        }
+        @media (min-width: 769px) {
+            #sidebar { position: relative; }
+            #content { width: calc(100% - 250px); }
+            #sidebarCollapse { display: block !important; }
+        }
+        .password-field-cell { display: flex; align-items: center; justify-content: space-between; }
+        .password-field { -webkit-text-security: disc; font-family: sans-serif; }
+        .password-field.show-password { -webkit-text-security: initial; }
+        .main-content-section { display: none; } .main-content-section.active { display: block; }
+        .action-btns button { margin: 0 3px; }
+        #student-profile-card .list-group-item { background-color: transparent; border-color: rgba(0,0,0,0.08); }
+        @media print { body * { visibility: hidden; } #report-output, #report-output * { visibility: visible; } #report-output { position: absolute; left: 0; top: 0; width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div id="loginPage" class="login-page">
+        <div class="login-box">
+            <h2 id="loginSchoolName">শফিকুল আইটি এন্ড ট্রেইনিং সেন্টার</h2>
+            <div id="adminLoginView">
+                <form id="loginForm">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Email Address" required>
+                        <label for="loginEmail">অ্যাডমিন ইমেইল</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                        <label for="loginPassword">পাসওয়ার্ড</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">লগইন করুন</button>
+                </form>
+                <button id="showAffiliateLogin" class="btn btn-link mt-3">স্টুডেন্ট অ্যাফিলিয়েট পোর্টাল</button>
+            </div>
+            <div id="affiliateLoginView" style="display:none;">
+                <h4>অ্যাফিলিয়েট ড্যাশবোর্ড</h4>
+                <form id="affiliateLoginForm">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="affiliateStudentId" placeholder="Student ID" required>
+                        <label for="affiliateStudentId">আপনার স্টুডেন্ট আইডি</label>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 btn-lg">ড্যাশবোর্ড দেখুন</button>
+                </form>
+                <button id="showAdminLogin" class="btn btn-link mt-3">অ্যাডমিন লগইন</button>
+            </div>
+        </div>
+    </div>
+    <div id="affiliateDashboardPage" class="container py-4" style="display:none;">
+        <!-- Affiliate Dashboard will be rendered here by JS -->
+    </div>
+    <div class="wrapper" id="mainApp" style="display: none;">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3 id="sidebarSchoolName">শফিকুল আইটি</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active"><a href="#" class="nav-link" data-target="dashboard"><i class="fas fa-tachometer-alt me-2"></i> ড্যাশবোর্ড</a></li>
+                <li><a href="#" class="nav-link" data-target="search-student"><i class="fas fa-search me-2"></i> সার্চ</a></li>
+                <li><a href="#accountsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-users me-2"></i> একাউন্টস</a>
+                    <ul class="collapse list-unstyled" id="accountsSubmenu">
+                        <li><a href="#" class="nav-link" data-target="accounts-main">একাউন্টস</a></li>
+                        <li><a href="#" class="nav-link" data-target="accounts-ssn">এস এস এন</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link" data-target="add-student"><i class="fas fa-user-plus me-2"></i> শিক্ষার্থী যোগ</a></li>
+                <li><a href="#" class="nav-link" data-target="installments"><i class="fas fa-file-invoice-dollar me-2"></i> কিস্তি হিসাব</a></li>
+                <li><a href="#" class="nav-link" data-target="withdrawal-requests"><i class="fas fa-hand-holding-dollar me-2"></i> উত্তোলন অনুরোধ</a></li>
+                <li><a href="#" class="nav-link" data-target="expense"><i class="fas fa-calculator me-2"></i> খরচ হিসাব</a></li>
+                <li><a href="#" class="nav-link" data-target="reports"><i class="fas fa-chart-line me-2"></i> রিপোর্ট</a></li>
+                <li><a href="#settingsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cog me-2"></i> সেটিংস</a>
+                    <ul class="collapse list-unstyled" id="settingsSubmenu">
+                        <li><a href="#" class="nav-link" data-target="settings-school">স্কুল সেটিংস</a></li>
+                        <li><a href="#" class="nav-link" data-target="settings-affiliate">অ্যাফিলিয়েট সেটিংস</a></li>
+                        <li><a href="#" class="nav-link" data-target="settings-credentials">পাসওয়ার্ড পরিবর্তন</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i> লগ আউট</a></li>
+            </ul>
+        </nav>
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm mb-4">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        <i class="fas fa-align-left"></i>
+                        <span class="ms-2">মেনু</span>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- All page content sections are here. -->
+            <div id="dashboard" class="main-content-section active"> <h2>ড্যাশবোর্ড</h2> <div class="row g-4 mt-3"> <div class="col-md-6 col-lg-4"><div class="card card-custom text-white bg-info"><div class="card-body"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div><div><h5 class="card-title">চলতি মাসের ইনকাম</h5><p class="card-text fs-4 fw-bold" id="dashMonthlyIncome">৳ ০</p></div></div></div></div> <div class="col-md-6 col-lg-4"><div class="card card-custom text-white bg-primary"><div class="card-body"><div class="card-icon"><i class="fas fa-coins"></i></div><div><h5 class="card-title">মোট ইনকাম</h5><p class="card-text fs-4 fw-bold" id="dashTotalIncome">৳ ০</p></div></div></div></div> <div class="col-md-6 col-lg-4"><div class="card card-custom text-white bg-danger"><div class="card-body"><div class="card-icon"><i class="fas fa-arrow-down"></i></div><div><h5 class="card-title">বর্তমান মাসের খরচ</h5><p class="card-text fs-4 fw-bold" id="dashMonthlyExpense">৳ ০</p></div></div></div></div> <div class="col-md-6 col-lg-4"><div class="card card-custom text-white bg-warning"><div class="card-body"><div class="card-icon"><i class="fas fa-upload"></i></div><div><h5 class="card-title">বর্তমান মাসের উত্তোলন</h5><p class="card-text fs-4 fw-bold" id="dashMonthlyWithdrawal">৳ ০</p></div></div></div></div> <div class="col-md-6 col-lg-4"><div class="card card-custom text-white bg-secondary"><div class="card-body"><div class="card-icon"><i class="fas fa-wallet"></i></div><div><h5 class="card-title">মোট উত্তোলন</h5><p class="card-text fs-4 fw-bold" id="dashTotalWithdrawal">৳ ০</p></div></div></div></div> <div class="col-md-6 col-lg-4"><div class="card card-custom text-dark bg-light"><div class="card-body"><div class="card-icon"><i class="fas fa-users"></i></div><div><h5 class="card-title">মোট শিক্ষার্থী</h5><p class="card-text fs-4 fw-bold" id="dashTotalStudents">০</p></div></div></div></div> </div> </div>
+            <div id="search-student" class="main-content-section"> <h2>শিক্ষার্থী সার্চ করুন</h2> <div class="card mt-4"> <div class="card-body"> <form id="studentSearchForm"> <div class="input-group"> <input type="text" id="searchInput" class="form-control" placeholder="স্টুডেন্ট আইডি দিয়ে সার্চ করুন (যেমন: SIT-101)" required> <button class="btn btn-primary" type="submit"><i class="fas fa-search me-2"></i>সার্চ</button> </div> </form> </div> </div> <div id="searchResult" class="mt-4"></div> </div>
+            <div id="accounts-main" class="main-content-section"> <h2>একাউন্টস</h2> <div class="card mt-4"><div class="card-body"> <form id="accountsForm" class="needs-validation" novalidate> <input type="hidden" id="accountEditId" name="accountEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="accountSerial" name="accountSerial" readonly></div> <div class="col-md-2"><label>তারিখ</label><input type="date" class="form-control" id="accountDate" name="accountDate" required></div> <div class="col-md-3"><label>জিমেইল</label><input type="email" class="form-control" id="accountEmail" name="accountEmail" required></div> <div class="col-md-3"><label>পাসওয়ার্ড</label><div class="input-group"><input type="password" class="form-control" id="accountPassword" name="accountPassword" required><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div></div> <div class="col-md-3"><label>একাউন্ট স্ট্যাটাস</label><select class="form-select" id="accountStatus" name="accountStatus"><option value="রানিং">রানিং</option><option value="মোবাইল নাম্বার ভেরিফিকেশন">মোবাইল নাম্বার ভেরিফিকেশন</option><option value="হোল্ড">হোল্ড</option><option value="ব্যান">ব্যান</option></select></div> <div class="col-md-3" id="activationDateWrapper" style="display: none;"><label>একাউন্ট সচল এর তারিখ</label><input type="date" class="form-control" id="activationDate" name="activationDate"></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>তারিখ</th><th>জিমেইল</th><th>পাসওয়ার্ড</th><th>স্ট্যাটাস</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="accountsTableBody" data-state-key="accounts"></tbody></table></div> </div>
+            <div id="accounts-ssn" class="main-content-section"> <h2>একাউন্টস এস এস এন</h2> <div class="card mt-4"><div class="card-body"> <form id="ssnForm" class="needs-validation" novalidate> <input type="hidden" id="ssnEditId" name="ssnEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="ssnSerial" name="ssnSerial" readonly></div> <div class="col-md-2"><label>একাউন্ট ধরন</label><select class="form-select" id="ssnType" name="ssnType" required><option value="">নির্বাচন..</option><option>TOP SURVEYS</option><option>FIVE SURVEYS</option><option>PRIME OPINION</option><option>OPINION EDGE</option><option>EARN STAR</option><option>HEY CASH</option><option>OTHERS</option></select></div> <div class="col-md-3"><label>নাম</label><input type="text" id="ssnName" name="ssnName" class="form-control" required></div> <div class="col-md-2"><label>জন্ম তারিখ</label><input type="date" id="ssnDob" name="ssnDob" class="form-control" required></div> <div class="col-md-2"><label>মোবাইল</label><input type="tel" id="ssnMobile" name="ssnMobile" class="form-control"></div> <div class="col-md-2"><label>বয়স</label><input type="number" id="ssnAge" name="ssnAge" class="form-control"></div> <div class="col-md-2"><label>দেশ</label><select class="form-select" id="ssnCountry" name="ssnCountry" required><option>United States</option></select></div> <div class="col-md-2"><label>স্ট্যাড</label><select class="form-select" id="ssnState" name="ssnState" required></select></div> <div class="col-md-2"><label>সিটি</label><input type="text" id="ssnCity" name="ssnCity" class="form-control" required></div> <div class="col-md-2"><label>কাউন্টি</label><input type="text" id="ssnCounty" name="ssnCounty" class="form-control"></div> <div class="col-md-2"><label>জিপ কোড</label><input type="text" id="ssnZip" name="ssnZip" class="form-control" required></div> <div class="col-md-2"><label>এসএসএন</label><input type="text" id="ssnNumber" name="ssnNumber" class="form-control" required></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>ধরন</th><th>নাম</th><th>দেশ</th><th>SSN</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="ssnTableBody" data-state-key="ssnAccounts"></tbody></table></div> </div>
+            <div id="add-student" class="main-content-section"> <h2>শিক্ষার্থী যোগ করুন</h2> <div class="card mt-4"><div class="card-body"> <form id="studentForm" class="needs-validation" novalidate> <input type="hidden" id="studentEditId" name="studentEditId"> <div class="row g-3"> <div class="col-md-2"><label>স্টুডেন্ট আইডি</label><input type="text" class="form-control" id="studentIdField" name="studentId" readonly></div> <div class="col-md-2"><label>ভর্তি তারিখ</label><input type="date" class="form-control" id="studentDate" name="studentDate" required></div> <div class="col-md-4"><label>শিক্ষার্থীর নাম</label><input type="text" class="form-control" id="studentName" name="studentName" required></div> <div class="col-md-4"><label>পিতার নাম</label><input type="text" class="form-control" id="studentFatherName" name="studentFatherName" required></div> <div class="col-md-4"><label>ঠিকানা</label><input type="text" class="form-control" id="studentAddress" name="studentAddress" required></div> <div class="col-md-3"><label>সার্ভিস</label><select class="form-select" id="studentService" name="studentService" required><option value="">নির্বাচন..</option><option>আইপি</option><option>ভিপিএস</option><option>অন্যান্য</option></select></div> <div class="col-md-3"><label>টাকার পরিমান</label><input type="number" class="form-control" id="studentAmount" name="studentAmount" required></div><div class="col-md-2"><label>রেফারেল আইডি (ঐচ্ছিক)</label><input type="text" class="form-control" id="referralId" name="referralId"></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>স্টুডেন্ট আইডি</th><th>ভর্তি তারিখ</th><th>নাম</th><th>সার্ভিস</th><th>টাকা</th><th>Active/Inactive</th><th>একশন</th></tr></thead><tbody id="studentTableBody" data-state-key="students"></tbody></table></div> </div>
+            <div id="installments" class="main-content-section"> <h2>কিস্তি হিসাব</h2> <div class="card mt-4"><div class="card-body"> <form id="installmentsForm" class="needs-validation" novalidate> <input type="hidden" id="installmentEditId" name="installmentEditId"> <div class="row g-3"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="installmentSerial" name="installmentSerial" readonly></div> <div class="col-md-2"><label>তারিখ</label><input type="date" class="form-control" id="installmentDate" name="installmentDate" required></div> <div class="col-md-3"> <label>শিক্ষার্থীর নাম</label> <select class="form-select" id="installmentStudentName" name="installmentStudentName" required> <option value="">নির্বাচন করুন...</option> </select> </div> <div class="col-md-3"> <label>সার্ভিস</label> <select class="form-select" id="installmentService" name="installmentService" required> <option value="">নির্বাচন..</option><option>আইপি</option><option>ভিপিএস</option><option>অন্যান্য</option> </select> </div> <div class="col-md-3"><label>মোট টাকা</label><input type="number" class="form-control" id="installmentTotal" name="installmentTotal" required></div> <div class="col-md-3"><label>জমা</label><input type="number" class="form-control" id="installmentPaid" name="installmentPaid" required></div> <div class="col-md-3"><label>বাকি</label><input type="number" class="form-control" id="installmentDue" name="installmentDue" readonly></div> <div class="col-md-3"><label>কিস্তির তারিখ</label><input type="date" class="form-control" id="installmentNextDate" name="installmentNextDate" required></div> <div class="col-md-3"> <label>স্ট্যাটাস</label> <select class="form-select" id="installmentStatus" name="installmentStatus" required> <option value="Unpaid">Unpaid</option> <option value="Paid">Paid</option> </select> </div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সাবমিট</button><button type="reset" class="btn btn-secondary">রিসেট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>ছাত্রের নাম</th><th>মোট টাকা</th><th>জমা</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>স্ট্যাটাস</th><th>একশন</th></tr></thead><tbody id="installmentsTableBody" data-state-key="installments"></tbody></table></div> </div>
+            <div id="withdrawal-requests" class="main-content-section"> <h2>উত্তোলন অনুরোধসমূহ</h2> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>তারিখ</th><th>স্টুডেন্ট আইডি</th><th>নাম</th><th>টাকা</th><th>মাধ্যম</th><th>একাউন্ট</th><th>স্ট্যাটাস</th><th>একশন</th></tr></thead><tbody id="withdrawalRequestsTableBody" data-state-key="withdrawalRequests"></tbody></table></div> </div>
+            <div id="expense" class="main-content-section"> <h2>খরচ হিসাব</h2> <div class="card mt-4"><div class="card-body"> <form id="expenseForm" class="needs-validation" novalidate> <input type="hidden" id="expenseEditId" name="expenseEditId"> <div class="row g-3 align-items-end"> <div class="col-md-1"><label>সিরিয়াল</label><input type="text" class="form-control" id="expenseSerial" name="expenseSerial" readonly></div> <div class="col-md-3"><label>তারিখ</label><input type="date" class="form-control" id="expenseDate" name="expenseDate" required></div> <div class="col-md-4"><label>খরচের খাত</label><select class="form-select" id="expenseCategory" name="expenseCategory" required><option value="">নির্বাচন..</option><option>আয়পি ক্রয়</option><option>ভিপিএস ক্রয়</option><option>একাউন্ট ক্রয়</option><option>অন্যান্য</option></select></div> <div class="col-md-3"><label>খরচের পরিমান</label><input type="number" class="form-control" id="expenseAmount" name="expenseAmount" required></div> <div class="col-md-1"><button type="submit" class="btn btn-primary w-100">সাবমিট</button></div> </div> </form> </div></div> <div class="table-responsive mt-4"><table class="table table-striped table-hover"><thead><tr><th>সিরিয়াল</th><th>তারিখ</th><th>খরচের খাত</th><th>পরিমান</th><th>একশন</th></tr></thead><tbody id="expenseTableBody" data-state-key="expenses"></tbody></table></div> </div>
+            <div id="reports" class="main-content-section"> <h2>রিপোর্ট</h2> <div class="card mt-4"><div class="card-body"> <div class="row g-3 align-items-end"> <div class="col-md-4"><label for="reportStartDate">শুরুর তারিখ</label><input type="date" id="reportStartDate" class="form-control"></div> <div class="col-md-4"><label for="reportEndDate">শেষের তারিখ</label><input type="date" id="reportEndDate" class="form-control"></div> <div class="col-md-2"><button class="btn btn-primary w-100" id="generateReportBtn">রিপোর্ট দেখুন</button></div> <div class="col-md-2"><button class="btn btn-success w-100" onclick="window.print()"><i class="fas fa-print me-2"></i>প্রিন্ট</button></div> </div> </div></div> <div id="report-output" class="mt-4"></div> </div>
+            <div id="settings-school" class="main-content-section"> <h2>স্কুল সেটিংস</h2> <div class="card mt-4"><div class="card-body" style="max-width: 700px; margin: auto;"> <form id="schoolSettingsForm"> <div class="row g-3"> <div class="col-md-6"><label>স্কুল এর নাম</label><input type="text" id="settingSchoolName" name="settingSchoolName" class="form-control"></div> <div class="col-md-6"><label>স্কুল এর ঠিকানা</label><input type="text" id="settingSchoolAddress" name="settingSchoolAddress" class="form-control"></div> <div class="col-md-6"><label>মোবাইল</label><input type="tel" id="settingSchoolMobile" name="settingSchoolMobile" class="form-control"></div> <div class="col-md-6"><label>ইমেইল</label><input type="email" id="settingSchoolEmail" name="settingSchoolEmail" class="form-control"></div> <div class="col-md-12 text-end mt-3"><button type="submit" class="btn btn-primary">সেভ করুন</button></div> </div> </form> </div></div> </div>
+            <div id="settings-affiliate" class="main-content-section"> <h2>অ্যাফিলিয়েট সেটিংস</h2> <div class="card mt-4"><div class="card-body" style="max-width: 500px; margin: auto;"> <form id="affiliateSettingsForm"> <div class="mb-3"> <label>প্রতি রেফারে কমিশন (টাকা)</label> <input type="number" id="affiliateFee" name="affiliateFee" class="form-control" required> </div> <div class="text-end"><button type="submit" class="btn btn-primary">সেভ করুন</button></div> </form> </div></div> </div>
+            <div id="settings-credentials" class="main-content-section"> <h2>পাসওয়ার্ড পরিবর্তন</h2> <div class="card mt-4"><div class="card-body" style="max-width: 500px; margin: auto;"> <form id="changeCredentialsForm"> <div class="mb-3"> <label>বর্তমান পাসওয়ার্ড <span class="text-danger">*</span></label> <div class="input-group"><input type="password" id="currentPassword" name="currentPassword" class="form-control" required><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div> </div> <hr> <div class="mb-3"> <label>নতুন পাসওয়ার্ড (ঐচ্ছিক)</label> <div class="input-group"><input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="খালি রাখলে পরিবর্তন হবে না"><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div> </div> <div class="mb-3"> <label>নতুন পাসওয়ার্ড নিশ্চিত করুন</label> <div class="input-group"><input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-control"><button class="btn btn-outline-secondary password-toggle-icon" type="button"><i class="fas fa-eye"></i></button></div> </div> <div class="text-end"> <button type="submit" class="btn btn-primary">আপডেট করুন</button> </div> </form> </div></div> </div>
+        </div>
+        <nav id="bottom-nav">
+            <a href="#" class="bottom-nav-link active" data-target="dashboard"> <i class="fas fa-tachometer-alt"></i> <span>ড্যাশবোর্ড</span> </a>
+            <a href="#" class="bottom-nav-link" data-target="search-student"> <i class="fas fa-search"></i> <span>সার্চ</span> </a>
+            <a href="#" class="bottom-nav-link fab-button" data-target="add-student"> <i class="fas fa-plus"></i> </a>
+            <a href="#" class="bottom-nav-link" data-target="installments"> <i class="fas fa-file-invoice-dollar"></i> <span>কিস্তি</span> </a>
+            <a href="#" id="open-sidebar-from-bottom"> <i class="fas fa-bars"></i> <span>মেনু</span> </a>
+        </nav>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js" type="module"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getDatabase, ref, onValue, set, push, update, remove, serverTimestamp, get, runTransaction } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // ============== আপনার নতুন Firebase প্রজেক্টের কনফিগারেশন ==============
+        const firebaseConfig = {
+          apiKey: "AIzaSyB3NEk6Ske5-43HEYg4dNc4OU-f9o6Xz60",
+          authDomain: "shafiqul-survey.firebaseapp.com",
+          databaseURL: "https://shafiqul-survey-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "shafiqul-survey",
+          storageBucket: "shafiqul-survey.appspot.com",
+          messagingSenderId: "269731246501",
+          appId: "1:269731246501:web:301f75feca0632f2ab384c",
+          measurementId: "G-2RV634KV47"
+        };
+        // =================================================================================
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        
+        (function() {
+            'use strict';
+            const Toast=Swal.mixin({toast:!0,position:"top-end",showConfirmButton:!1,timer:3e3,timerProgressBar:!0,didOpen:e=>{e.addEventListener("mouseenter",Swal.stopTimer),e.addEventListener("mouseleave",Swal.resumeTimer)}}),loginPage=document.getElementById("loginPage"),mainApp=document.getElementById("mainApp"),sidebar=document.getElementById("sidebar"),overlay=document.querySelector(".overlay"),affiliateLoginPage=document.getElementById("affiliateLoginView"),adminLoginPage=document.getElementById("adminLoginView"),affiliateDashboardPage=document.getElementById("affiliateDashboardPage");let unsubscribeListeners=[];window.appState={};const showSidebar=()=>{sidebar.classList.add("active"),overlay.classList.add("active")},dismissSidebar=()=>{sidebar.classList.remove("active"),overlay.classList.remove("active")};
+            
+            document.getElementById('showAffiliateLogin').addEventListener('click', () => { adminLoginPage.style.display = 'none'; affiliateLoginPage.style.display = 'block'; });
+            document.getElementById('showAdminLogin').addEventListener('click', () => { affiliateLoginPage.style.display = 'none'; adminLoginPage.style.display = 'block'; });
+
+            onAuthStateChanged(auth,e=>{e?(loginPage.style.display="none",mainApp.style.display="flex",affiliateDashboardPage.style.display="none",initializeRealtimeListeners()):(mainApp.style.display="none",affiliateDashboardPage.style.display="none",loginPage.style.display="flex",unsubscribeListeners.forEach(e=>e()),unsubscribeListeners=[])}),document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const t=document.getElementById("loginEmail").value,s=document.getElementById("loginPassword").value;try{await signInWithEmailAndPassword(auth,t,s),document.getElementById("loginForm").reset()}catch(e){Swal.fire({icon:"error",title:"লগইন ব্যর্থ",text:"আপনার দেওয়া ইমেইল বা পাসওয়ার্ড সঠিক নয়।"})}}),document.getElementById("logoutBtn").addEventListener("click",e=>{e.preventDefault(),Swal.fire({title:"আপনি কি লগ আউট করতে চান?",icon:"question",showCancelButton:!0,confirmButtonColor:"#d33",cancelButtonColor:"#3085d6",confirmButtonText:"হ্যাঁ, লগ আউট করুন!",cancelButtonText:"না, বাতিল করুন"}).then(e=>{e.isConfirmed&&signOut(auth)})}),document.getElementById("sidebarCollapse").addEventListener("click",showSidebar),document.getElementById("open-sidebar-from-bottom").addEventListener("click",e=>{e.preventDefault(),showSidebar()}),overlay.addEventListener("click",dismissSidebar);const updateActiveLink=e=>{document.querySelectorAll("#sidebar .nav-link").forEach(t=>{const s=t.closest("li");s.classList.remove("active"),t.getAttribute("data-target")===e&&(s.classList.add("active"),t.closest(".collapse")?.previousElementSibling.closest("li").classList.add("active"))}),document.querySelectorAll("#bottom-nav a").forEach(t=>{t.classList.remove("active"),t.getAttribute("data-target")===e&&t.classList.add("active")})},switchPage=e=>{document.querySelectorAll(".main-content-section").forEach(t=>{t.classList.remove("active")}),document.getElementById(e).classList.add("active"),updateActiveLink(e),dismissSidebar()};document.querySelectorAll("#sidebar a[data-target]").forEach(e=>{e.addEventListener("click",function(t){t.preventDefault(),switchPage(this.getAttribute("data-target"))})}),document.querySelectorAll("#bottom-nav a[data-target]").forEach(e=>{e.addEventListener("click",function(t){t.preventDefault(),switchPage(this.getAttribute("data-target"))})});const today=new Date().toISOString().split("T")[0];document.querySelectorAll('input[type="date"]').forEach(e=>{e.value=today});const getFormData=e=>{const t=new FormData(e),s={};for(const[a,d]of t.entries())a.endsWith("EditId")||(s[a]=d);return s};
+            
+            const handleFormSubmit = async (form, path) => {
+                if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); form.classList.add('was-validated'); return; }
+                form.classList.remove('was-validated');
+                const editIdInput = form.querySelector('input[type="hidden"]'); const editId = editIdInput.value; const data = getFormData(form);
+                try {
+                    if (editId) {
+                        const existingData = window.appState[path].find(i => i.id === editId);
+                        await set(ref(db, `${path}/${editId}`), {...existingData, ...data});
+                    } else {
+                        data.createdAt = serverTimestamp();
+                        data.isActive = true;
+                        await push(ref(db, path), data);
+                    }
+                    Toast.fire({ icon: 'success', title: 'সফলভাবে সেভ হয়েছে' });
+                    form.reset(); editIdInput.value = '';
+                    document.querySelectorAll('input[type="date"]').forEach(field => { field.value = today; });
+                } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: `তথ্য সেভ করা যায়নি: ${error.message}` }); }
+            };
+
+            const editItem = (id, path, formId) => {
+                const item = window.appState[path]?.find(i => i.id === id);
+                if (item) {
+                    const form = document.getElementById(formId); form.querySelector('input[type="hidden"]').value = item.id;
+                    Object.keys(item).forEach(key => { const element = form.elements[key]; if (element) element.value = item[key]; });
+                    form.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+            const deleteItem = (id, path, name = 'আইটেম') => { Swal.fire({ title: 'আপনি কি নিশ্চিত?', text: "এই কাজটি ফিরিয়ে আনা সম্ভব নয়!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#3085d6', cancelButtonColor: '#d33', confirmButtonText: 'হ্যাঁ, মুছে ফেলুন!', cancelButtonText: 'না, বাতিল করুন' }).then(async (result) => { if (result.isConfirmed) { try { await remove(ref(db, `${path}/${id}`)); Swal.fire('মুছে ফেলা হয়েছে!', `${name} টি সফলভাবে মুছে ফেলা হয়েছে।`, 'success'); } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'মুছে ফেলা সম্ভব হয়নি।' }); } } }); };
+            const toggleStatus = async (id, path, field = 'isActive') => {
+                const item = window.appState[path]?.find(i => i.id === id);
+                if (item) {
+                    const updates = {};
+                    if (field === 'installmentStatus') {
+                        updates[field] = item[field] === 'Paid' ? 'Unpaid' : 'Paid';
+                    } else {
+                        updates[field] = !item.isActive;
+                    }
+                    await update(ref(db, `${path}/${id}`), updates);
+                }
+            };
+            
+            document.querySelector('#mainApp').addEventListener('click', e => {
+                const button = e.target.closest('tbody button, .password-toggle-icon'); if (!button) return;
+                if (button.closest('tbody')) {
+                    const { action, id } = button.dataset;
+                    const stateKey = button.closest('tbody').dataset.stateKey;
+                    const formId = stateKey.replace(/s$|Accounts$/, '') + 'Form';
+                    const itemName = stateKey === 'accounts' ? 'একাউন্ট' : stateKey === 'ssnAccounts' ? 'SSN একাউন্ট' : stateKey === 'students' ? 'শিক্ষার্থী' : stateKey === 'installments' ? 'কিস্তি' : stateKey === 'withdrawalRequests' ? 'অনুরোধ' : 'খরচ';
+                    if (action === 'edit') editItem(id, stateKey, formId);
+                    if (action === 'delete') deleteItem(id, stateKey, itemName);
+                    if (action === 'toggle' && stateKey === 'installments') toggleStatus(id, stateKey, 'installmentStatus');
+                    else if (action === 'toggle') toggleStatus(id, stateKey, 'isActive');
+                    if(action === 'approve-withdrawal' || action === 'reject-withdrawal') handleWithdrawalAction(id, action);
+                    if (action === 'toggle-password') { const passField = button.closest('td').querySelector('.password-field'); const icon = button.querySelector('i'); passField.classList.toggle('show-password'); icon.classList.toggle('fa-eye'); icon.classList.toggle('fa-eye-slash'); }
+                }
+                if (button.classList.contains('password-toggle-icon')) {
+                    const input = button.previousElementSibling; const icon = button.querySelector('i');
+                    if (input.type === "password") { input.type = "text"; icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash');
+                    } else { input.type = "password"; icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+                }
+            });
+            
+            const populateStudentDropdowns = (students) => { const select = document.getElementById('installmentStudentName'); select.innerHTML = '<option value="">নির্বাচন করুন...</option>'; students.forEach(student => { select.innerHTML += `<option value="${student.studentId}">${student.studentId} - ${student.studentName}</option>`; }); };
+            
+            const renderFunctions = {
+                accounts: data => { const t = document.getElementById('accountsTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.accountDate}</td><td>${e.accountEmail}</td><td class="password-field-cell"><span class="password-field">${e.accountPassword}</span><button class="btn btn-sm btn-outline-secondary" data-action="toggle-password"><i class="fas fa-eye"></i></button></td><td><span class="badge bg-info">${e.accountStatus}</span></td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('accountSerial').value = data.length + 1; },
+                ssnAccounts: data => { const t = document.getElementById('ssnTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.ssnType}</td><td>${e.ssnName}</td><td>${e.ssnCountry}</td><td>${e.ssnNumber}</td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('ssnSerial').value = data.length + 1; },
+                students: data => { const t = document.getElementById('studentTableBody'); t.innerHTML = ''; data.forEach((e) => { t.innerHTML += `<tr><td>${e.studentId}</td><td>${e.studentDate}</td><td>${e.studentName}</td><td>${e.studentService}</td><td>${e.studentAmount}</td><td><button class="btn btn-sm btn-${e.isActive?"success":"danger"}" data-action="toggle" data-id="${e.id}">${e.isActive?"Active":"Inactive"}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); updateDashboard(); populateStudentDropdowns(data); },
+                installments: data => { const tbody = document.getElementById('installmentsTableBody'); tbody.innerHTML = ''; data.forEach((item, i) => { const statusBadge = item.installmentStatus === 'Paid' ? 'success' : 'danger'; tbody.innerHTML += `<tr><td>${i + 1}</td><td>${item.installmentStudentName}</td><td>${item.installmentTotal}</td><td>${item.installmentPaid}</td><td>${item.installmentDue}</td><td>${item.installmentNextDate}</td><td><button class="btn btn-sm btn-${statusBadge}" data-action="toggle" data-id="${item.id}">${item.installmentStatus}</button></td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${item.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${item.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('installmentSerial').value = data.length + 1; },
+                withdrawalRequests: data => { const t = document.getElementById('withdrawalRequestsTableBody'); t.innerHTML = ''; data.forEach((e) => { const status = e.status === 'Pending' ? 'warning' : e.status === 'Completed' ? 'success' : 'danger'; let actions = e.status === 'Pending' ? `<button class="btn btn-sm btn-success" data-action="approve-withdrawal" data-id="${e.id}">Approve</button><button class="btn btn-sm btn-danger" data-action="reject-withdrawal" data-id="${e.id}">Reject</button>` : 'N/A'; t.innerHTML += `<tr><td>${new Date(e.requestDate).toLocaleDateString("bn-BD")}</td><td>${e.studentId}</td><td>${e.studentName}</td><td>${e.amount}</td><td>${e.method}</td><td>${e.accountNumber}</td><td><span class="badge bg-${status}">${e.status}</span></td><td class="action-btns">${actions}</td></tr>`; }); },
+                expenses: data => { const t = document.getElementById('expenseTableBody'); t.innerHTML = ''; data.forEach((e, i) => { t.innerHTML += `<tr><td>${i+1}</td><td>${e.expenseDate}</td><td>${e.expenseCategory}</td><td>${e.expenseAmount}</td><td class="action-btns"><button class="btn btn-sm btn-warning" data-action="edit" data-id="${e.id}"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" data-action="delete" data-id="${e.id}"><i class="fas fa-trash"></i></button></td></tr>`; }); document.getElementById('expenseSerial').value = data.length + 1; updateDashboard(); }
+            };
+
+            const initializeRealtimeListeners = () => {
+                const paths = ['accounts', 'ssnAccounts', 'students', 'installments', 'expenses', 'settings', 'withdrawalRequests', 'referrals'];
+                unsubscribeListeners.forEach(unsub => unsub()); unsubscribeListeners = [];
+                paths.forEach(path => {
+                    const unsub = onValue(ref(db, path), snapshot => {
+                        const data = snapshot.val();
+                        const items = data ? Object.keys(data).map(key => ({ ...data[key], id: key })) : [];
+                        window.appState[path] = items;
+                        if(renderFunctions[path]) renderFunctions[path](items);
+                        if(path === 'settings') loadSettings(items);
+                    });
+                    unsubscribeListeners.push(unsub);
+                });
+            };
+
+            document.getElementById('accountsForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'accounts'); });
+            document.getElementById('ssnForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'ssnAccounts'); });
+            document.getElementById('studentForm').addEventListener('submit', async e => {
+                e.preventDefault();
+                const editId = document.getElementById('studentEditId').value;
+                const referralId = document.getElementById('referralId').value.trim();
+                if (!editId) {
+                    const studentCountSnapshot = await get(ref(db, 'students'));
+                    const studentCount = studentCountSnapshot.exists() ? Object.keys(studentCountSnapshot.val()).length : 0;
+                    const newId = `SIT-${101 + studentCount}`;
+                    document.getElementById('studentIdField').value = newId;
+
+                    if(referralId && window.appState.settings && window.appState.settings[0]?.affiliateFee > 0) {
+                        const fee = parseFloat(window.appState.settings[0].affiliateFee);
+                        const studentRef = ref(db, 'students');
+                        get(studentRef).then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const students = snapshot.val();
+                                const referrerKey = Object.keys(students).find(key => students[key].studentId === referralId);
+                                if(referrerKey) {
+                                    const referrerRef = ref(db, `students/${referrerKey}`);
+                                    runTransaction(referrerRef, (currentData) => {
+                                        if (currentData) {
+                                            currentData.affiliateBalance = (currentData.affiliateBalance || 0) + fee;
+                                        }
+                                        return currentData;
+                                    });
+                                    push(ref(db, 'referrals'), {
+                                        referrerId: referralId, newStudentId: newId, newStudentName: document.getElementById('studentName').value,
+                                        commissionAmount: fee, date: serverTimestamp()
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+                handleFormSubmit(e.target, 'students');
+            });
+            document.getElementById('installmentsForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'installments'); });
+            document.getElementById('expenseForm').addEventListener('submit', e => { e.preventDefault(); handleFormSubmit(e.target, 'expenses'); });
+
+            const installmentTotalEl = document.getElementById('installmentTotal'), installmentPaidEl = document.getElementById('installmentPaid'), installmentDueEl = document.getElementById('installmentDue');
+            const calculateDue = () => { const total = parseFloat(installmentTotalEl.value) || 0, paid = parseFloat(installmentPaidEl.value) || 0; installmentDueEl.value = total - paid; };
+            installmentTotalEl.addEventListener('input', calculateDue); installmentPaidEl.addEventListener('input', calculateDue);
+            
+            const updateDashboard = () => { if (!window.appState.students) return; const t = new Date().getMonth(), e = new Date().getFullYear(); const a = (a, o) => a.filter(n => new Date(n[o]).getMonth() === t && new Date(n[o]).getFullYear() === e); const o = a(window.appState.students, "studentDate").reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const n = window.appState.students.reduce((t, e) => t + parseFloat(e.studentAmount || 0), 0); const i = (window.appState.expenses ? a(window.appState.expenses, "expenseDate") : []).reduce((t, e) => t + parseFloat(e.expenseAmount || 0), 0); const d = (window.appState.withdrawalRequests || []).filter(req => req.status === 'Completed').reduce((t, e) => t + parseFloat(e.amount || 0), 0); const l = a(window.appState.withdrawalRequests || [], "requestDate").filter(req => req.status === 'Completed').reduce((t, e) => t + parseFloat(e.amount || 0), 0); document.getElementById("dashMonthlyIncome").textContent = `৳ ${o.toLocaleString()}`; document.getElementById("dashTotalIncome").textContent = `৳ ${n.toLocaleString()}`; document.getElementById("dashMonthlyExpense").textContent = `৳ ${i.toLocaleString()}`; document.getElementById("dashMonthlyWithdrawal").textContent = `৳ ${l.toLocaleString()}`; document.getElementById("dashTotalWithdrawal").textContent = `৳ ${d.toLocaleString()}`; document.getElementById("dashTotalStudents").textContent = window.appState.students.length; };
+            document.getElementById('generateReportBtn').addEventListener('click', () => {/* Unchanged */});
+            
+            const loadSettings = (settingsData) => { 
+                const settings = settingsData.length > 0 ? settingsData[0] : { name: 'শফিকুল আইটি', affiliateFee: 0 };
+                window.appState.currentSettings = settings;
+                document.getElementById("settingSchoolName").value = settings.name; 
+                document.getElementById("loginSchoolName").textContent = settings.name;
+                document.getElementById('schoolSettingsForm').dataset.docId = settings.id;
+                document.getElementById('affiliateFee').value = settings.affiliateFee || 0;
+                document.getElementById('affiliateSettingsForm').dataset.docId = settings.id;
+                const nameParts = settings.name.split(" "); document.getElementById("sidebarSchoolName").textContent = nameParts.length > 1 ? `${nameParts[0]} ${nameParts[1]}` : name;
+            };
+            
+            document.getElementById('schoolSettingsForm').addEventListener('submit', async e => {
+                e.preventDefault();
+                const docId = e.target.dataset.docId;
+                const settingsData = { name: document.getElementById("settingSchoolName").value, address: document.getElementById("settingSchoolAddress").value, mobile: document.getElementById("settingSchoolMobile").value, email: document.getElementById("settingSchoolEmail").value, affiliateFee: parseFloat(document.getElementById('affiliateFee').value) || 0 };
+                try {
+                    if (docId) { await set(ref(db, `settings/${docId}`), settingsData); }
+                    else { await push(ref(db, `settings`), settingsData); }
+                    Toast.fire({ icon: 'success', title: 'সেটিংস সেভ হয়েছে!' });
+                } catch (error) { Swal.fire({ icon: 'error', title: 'ত্রুটি', text: 'সেটিংস সেভ করা যায়নি।' }); }
+            });
+
+            document.getElementById('affiliateSettingsForm').addEventListener('submit', async e => {
+                e.preventDefault();
+                const docId = window.appState.currentSettings?.id;
+                const fee = parseFloat(document.getElementById('affiliateFee').value) || 0;
+                if(docId) {
+                    await update(ref(db, `settings/${docId}`), { affiliateFee: fee });
+                    Toast.fire({ icon: 'success', title: 'অ্যাফিলিয়েট ফি সেভ হয়েছে!' });
+                } else { Toast.fire({ icon: 'error', title: 'প্রথমে স্কুল সেটিংস সেভ করুন' }); }
+            });
+
+            document.getElementById('changeCredentialsForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const currentPass = document.getElementById('currentPassword').value;
+                const newPass = document.getElementById('newPassword').value;
+                const confirmPass = document.getElementById('confirmNewPassword').value;
+                if (newPass && newPass !== confirmPass) { return Swal.fire({ icon: 'error', title: 'ভুল', text: 'নতুন পাসওয়ার্ড দুটি মিলছে না।' }); }
+                const user = auth.currentUser;
+                const credential = EmailAuthProvider.credential(user.email, currentPass);
+                try {
+                    await reauthenticateWithCredential(user, credential);
+                    if (newPass) {
+                        await updatePassword(user, newPass);
+                        Toast.fire({ icon: 'success', title: 'পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!' });
+                    }
+                    e.target.reset();
+                } catch (error) { Swal.fire({ icon: 'error', title: 'ভুল', text: 'আপনার বর্তমান পাসওয়ার্ড সঠিক নয়।' }); }
+            });
+
+            document.getElementById('studentSearchForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const searchId = document.getElementById('searchInput').value.trim();
+                const resultDiv = document.getElementById('searchResult');
+                if (!searchId) { resultDiv.innerHTML = '<div class="alert alert-warning">অনুগ্রহ করে একটি স্টুডেন্ট আইডি লিখুন।</div>'; return; }
+                const studentData = window.appState.students.find(s => s.studentId === searchId);
+                if (!studentData) { resultDiv.innerHTML = '<div class="alert alert-danger">এই আইডি দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।</div>'; return; }
+                const installmentsHistory = window.appState.installments.filter(i => i.installmentStudentName === studentData.studentId);
+                let html = `<div class="card" id="student-profile-card"><div class="card-header bg-primary text-white"><h4>শিক্ষার্থীর প্রোফাইল</h4></div><div class="card-body"><ul class="list-group list-group-flush"><li class="list-group-item"><strong>স্টুডেন্ট আইডি:</strong> ${studentData.studentId}</li><li class="list-group-item"><strong>নাম:</strong> ${studentData.studentName}</li><li class="list-group-item"><strong>পিতার নাম:</strong> ${studentData.studentFatherName}</li><li class="list-group-item"><strong>ঠিকানা:</strong> ${studentData.studentAddress}</li><li class="list-group-item"><strong>ভর্তি তারিখ:</strong> ${studentData.studentDate}</li><li class="list-group-item"><strong>সার্ভিস:</strong> ${studentData.studentService}</li><li class="list-group-item"><strong>মোট ফি:</strong> ৳ ${studentData.studentAmount}</li></ul><h5 class="mt-4">কিস্তির ইতিহাস</h5>`;
+                if (installmentsHistory.length > 0) {
+                    html += `<table class="table table-bordered table-sm"><thead><tr><th>তারিখ</th><th>মোট</th><th>জমা</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>স্ট্যাটাস</th></tr></thead><tbody>`;
+                    installmentsHistory.forEach(inst => { html += `<tr><td>${inst.installmentDate}</td><td>${inst.installmentTotal}</td><td>${inst.installmentPaid}</td><td>${inst.installmentDue}</td><td>${inst.installmentNextDate}</td><td><span class="badge bg-${inst.installmentStatus === 'Paid' ? 'success' : 'danger'}">${inst.installmentStatus}</span></td></tr>`; });
+                    html += '</tbody></table>';
+                } else { html += '<p>এই শিক্ষার্থীর কোনো কিস্তির তথ্য পাওয়া যায়নি।</p>'; }
+                html += '</div></div>';
+                resultDiv.innerHTML = html;
+            });
+            
+            document.getElementById('affiliateLoginForm').addEventListener('submit', async e => {
+                e.preventDefault();
+                const studentId = document.getElementById('affiliateStudentId').value.trim();
+                if (!window.appState.students) return;
+                const student = window.appState.students.find(s => s.studentId === studentId);
+                if(!student) {
+                    Swal.fire({ icon: 'error', title: 'ভুল আইডি', text: 'এই আইডি দিয়ে কোনো শিক্ষার্থী পাওয়া যায়নি।' });
+                } else {
+                    renderAffiliateDashboard(student);
+                    loginPage.style.display = 'none';
+                    affiliateDashboardPage.style.display = 'block';
+                }
+            });
+
+            function renderAffiliateDashboard(student) {
+                const referrals = window.appState.referrals?.filter(r => r.referrerId === student.studentId) || [];
+                const withdrawalHistory = window.appState.withdrawalRequests?.filter(r => r.studentId === student.studentId) || [];
+
+                let html = `
+                    <button id="affiliateLogout" class="btn btn-danger mb-3">লগইন পেজে ফিরে যান</button>
+                    <div class="card">
+                        <div class="card-header bg-success text-white"><h3>${student.studentName} - অ্যাফিলিয়েট ড্যাশবোর্ড</h3></div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-6"><div class="card bg-light p-3"><h4>বর্তমান ব্যালেন্স</h4><h2 class="fw-bold">৳ ${student.affiliateBalance || 0}</h2></div></div>
+                                <div class="col-md-6"><div class="card bg-light p-3"><h4>আপনার রেফারেল আইডি</h4><h2 class="fw-bold text-primary">${student.studentId}</h2></div></div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-7">
+                                    <h5>আপনার রেফারেলের তালিকা</h5>
+                                    <table class="table table-sm table-bordered"><thead><tr><th>ছাত্রের নাম</th><th>কমিশন</th><th>তারিখ</th></tr></thead><tbody>
+                                    ${referrals.length > 0 ? referrals.map(r => `<tr><td>${r.newStudentName}</td><td>৳ ${r.commissionAmount}</td><td>${new Date(r.date).toLocaleDateString('bn-BD')}</td></tr>`).join('') : '<tr><td colspan="3">কোনো রেফারেল পাওয়া যায়নি।</td></tr>'}
+                                    </tbody></table>
+                                </div>
+                                <div class="col-md-5">
+                                    <h5>টাকা উত্তোলন করুন</h5>
+                                    <form id="withdrawalRequestForm">
+                                        <div class="form-floating mb-2"><input type="number" id="withdrawalAmount" class="form-control" placeholder="টাকার পরিমাণ" max="${student.affiliateBalance || 0}" required><label>টাকার পরিমাণ</label></div>
+                                        <div class="form-floating mb-2"><select id="withdrawalMethod" class="form-select"><option>বিকাশ</option><option>নগদ</option></select><label>মাধ্যম</label></div>
+                                        <div class="form-floating mb-2"><input type="text" id="withdrawalNumber" class="form-control" placeholder="একাউন্ট নম্বর" required><label>একাউন্ট নম্বর</label></div>
+                                        <button type="submit" class="btn btn-success w-100">আবেদন করুন</button>
+                                    </form>
+                                </div>
+                            </div>
+                             <div class="row mt-4">
+                                <div class="col-12">
+                                    <h5>আপনার উত্তোলনের ইতিহাস</h5>
+                                    <table class="table table-sm table-bordered">
+                                        <thead><tr><th>তারিখ</th><th>টাকা</th><th>মাধ্যম</th><th>একাউন্ট</th><th>স্ট্যাটাস</th></tr></thead>
+                                        <tbody id="withdrawalHistoryBody">
+                                            ${withdrawalHistory.length > 0 ? withdrawalHistory.map(r => {
+                                                const status = r.status === 'Pending' ? 'warning' : r.status === 'Completed' ? 'success' : 'danger';
+                                                return `<tr>
+                                                    <td>${new Date(r.requestDate).toLocaleDateString('bn-BD')}</td>
+                                                    <td>৳ ${r.amount}</td>
+                                                    <td>${r.method}</td>
+                                                    <td>${r.accountNumber}</td>
+                                                    <td><span class="badge bg-${status}">${r.status}</span></td>
+                                                </tr>`
+                                            }).join('') : '<tr><td colspan="5">কোনো উত্তোলনের ইতিহাস পাওয়া যায়নি।</td></tr>'}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                affiliateDashboardPage.innerHTML = html;
+                document.getElementById('affiliateLogout').addEventListener('click', () => {
+                    affiliateDashboardPage.style.display = 'none'; loginPage.style.display = 'flex';
+                });
+
+                document.getElementById('withdrawalRequestForm').addEventListener('submit', async e => {
+                    e.preventDefault();
+                    const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+                    const currentBalance = student.affiliateBalance || 0;
+                    if (amount > currentBalance) { 
+                        Swal.fire({icon: 'error', title: 'ব্যালেন্স নেই', text: 'আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই।'}); 
+                        return; 
+                    }
+                    
+                    const requestData = {
+                        studentId: student.studentId, 
+                        studentName: student.studentName, 
+                        amount: amount,
+                        method: document.getElementById('withdrawalMethod').value, 
+                        accountNumber: document.getElementById('withdrawalNumber').value,
+                        status: 'Pending', 
+                        requestDate: serverTimestamp()
+                    };
+
+                    try {
+                        const newBalance = currentBalance - amount;
+                        const studentRef = ref(db, `students/${student.id}/affiliateBalance`);
+                        
+                        // দুটি কাজ একসাথে করা হচ্ছে
+                        await set(studentRef, newBalance); // ব্যালেন্স কমানো
+                        await push(ref(db, 'withdrawalRequests'), requestData); // অনুরোধ যোগ করা
+                        
+                        Swal.fire({icon: 'success', title: 'সফল', text: 'আপনার আবেদনটি জমা হয়েছে।'});
+                        // ড্যাশবোর্ড রি-রেন্ডার করে নতুন ব্যালেন্স ও ইতিহাস দেখানোর জন্য
+                        const updatedStudent = {...student, affiliateBalance: newBalance};
+                        renderAffiliateDashboard(updatedStudent);
+
+                    } catch (error) { 
+                        Swal.fire({icon: 'error', title: 'ত্রুটি', text: 'আবেদন করা সম্ভব হয়নি। আবার চেষ্টা করুন।'}); 
+                    }
+                });
+            };
+            
+            async function handleWithdrawalAction(id, action) {
+                const requestRef = ref(db, `withdrawalRequests/${id}`);
+                const request = window.appState.withdrawalRequests.find(r => r.id === id);
+                if (!request) return;
+
+                const newStatus = action === 'approve-withdrawal' ? 'Completed' : 'Rejected';
+
+                try {
+                    // যদি অ্যাডমিন অনুরোধটি বাতিল করে, তাহলে ছাত্রকে টাকা ফেরত দিতে হবে
+                    if (newStatus === 'Rejected' && request.status !== 'Rejected') {
+                        const student = window.appState.students.find(s => s.studentId === request.studentId);
+                        if(student){
+                            const studentRef = ref(db, `students/${student.id}/affiliateBalance`);
+                            const currentBalance = student.affiliateBalance || 0;
+                            const newBalance = currentBalance + request.amount;
+                            await set(studentRef, newBalance);
+                        }
+                    }
+                    // স্ট্যাটাস আপডেট
+                    await update(requestRef, { status: newStatus });
+                    Toast.fire({ icon: 'success', title: `অনুরোধটি ${newStatus} হয়েছে` });
+                } catch (error) { 
+                    Swal.fire({icon: 'error', title: 'ত্রুটি', text: 'কাজটি সম্পন্ন করা যায়নি।'}); 
+                }
+            };
+        }());
+    </script>
+</body>
+</html>
